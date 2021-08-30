@@ -1,0 +1,50 @@
+import 'package:flutter/cupertino.dart';
+
+/// Has all urls used in the app as static const strings.
+class Url {
+  //Base URLs
+  static const jikanBaseUrl = 'https://api.jikan.moe/v3';
+
+  // A single anime object with all its details
+  //Endpoint Path: /anime/{id}(/request)
+  static String animeDetailsUrl({@required int id, @required Request request}) {
+    return '$jikanBaseUrl/anime/$id/${animeDetailsMap[request]}';
+  }
+
+  static String animeCategoryUrl({@required Category category}) {
+    return '$jikanBaseUrl/top/anime/1/${animeCategoryMap[category]}';
+  }
+}
+
+Map<Category, String> animeCategoryMap = {
+  Category.airing: 'airing',
+  Category.upcoming: 'upcoming',
+  Category.movie: 'movie',
+  Category.ova: 'ova',
+  Category.special: 'special'
+};
+Map<Request, String> animeDetailsMap = {
+  Request.pictures: 'pictures',
+  Request.characters_staff: 'characters_staff',
+  Request.episodes: 'episodes',
+  Request.recommendations: 'recommendations',
+  Request.reviews: 'reviews',
+  Request.videos: 'videos',
+};
+enum Request {
+  characters_staff,
+  episodes,
+  news,
+  pictures,
+  videos,
+  reviews,
+  recommendations,
+  userupdates
+}
+enum Category {
+  airing,
+  upcoming,
+  movie,
+  ova,
+  special,
+}

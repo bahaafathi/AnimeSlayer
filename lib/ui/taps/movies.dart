@@ -6,6 +6,7 @@ import 'package:myanime/cubits/movies.dart';
 import 'package:myanime/models/category.dart';
 import 'package:myanime/ui/widgets/custom_page.dart';
 import 'package:myanime/ui/widgets/header_swiper.dart';
+import 'package:myanime/ui/widgets/loading_view.dart';
 import 'package:myanime/ui/widgets/vehicle_cell.dart';
 import 'package:myanime/utils/menu.dart';
 import 'package:myanime/utils/photos.dart';
@@ -97,6 +98,7 @@ class AnimeGridView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RequestBuilder<MoviesCubit, CategoryModel>(
+      onLoading: (context, state, value) => LoadingSliverView(),
       onLoaded: (context, state, value) => SliverGrid(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,

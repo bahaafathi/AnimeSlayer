@@ -1,16 +1,15 @@
 import 'package:flutter_request_bloc/repositories/base.dart';
-import 'package:myanime/models/ova.dart';
-import 'package:myanime/models/special.dart';
+import 'package:myanime/models/category.dart';
 import 'package:myanime/services/ova.dart';
 import 'package:myanime/services/special.dart';
 
-class SpecialRepository extends BaseRepository<SpecialService, Special> {
+class SpecialRepository extends BaseRepository<SpecialService, CategoryModel> {
   const SpecialRepository(SpecialService service) : super(service);
 
   @override
-  Future<Special> fetchData() async {
+  Future<CategoryModel> fetchData() async {
     final response = await service.getSpecial();
 
-    return Special.fromJson(response.data);
+    return CategoryModel.fromJson(response.data);
   }
 }

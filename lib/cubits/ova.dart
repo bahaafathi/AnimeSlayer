@@ -1,10 +1,10 @@
 import 'package:flutter_request_bloc/cubits/request_cubit.dart';
 import 'package:flutter_request_bloc/cubits/request_state.dart';
-import 'package:myanime/models/ova.dart';
+import 'package:myanime/models/category.dart';
 import 'package:myanime/repositories/ova.dart';
 
 /// Cubit that holds information about Top Anime.
-class OvaCubit extends RequestCubit<OvaRepository, Ova> {
+class OvaCubit extends RequestCubit<OvaRepository, CategoryModel> {
   OvaCubit(OvaRepository repository) : super(repository);
 
   @override

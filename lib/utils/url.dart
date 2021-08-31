@@ -7,13 +7,24 @@ class Url {
 
   // A single anime object with all its details
   //Endpoint Path: /anime/{id}(/request)
-  static String animeDetailsUrl({@required int id, @required Request request}) {
-    return '$jikanBaseUrl/anime/$id/${animeDetailsMap[request]}';
+  static String animeDetailsUrl({@required int id, Request request}) {
+    return '$jikanBaseUrl/anime/$id/${request != null ? animeDetailsMap[request] : '/'}';
   }
 
   static String animeCategoryUrl({@required Category category}) {
     return '$jikanBaseUrl/top/anime/1/${animeCategoryMap[category]}';
   }
+
+  // About page
+  static const authorProfile = 'https://twitter.com/bahaafathi';
+  static const authorPatreon = 'https://www.patreon.com/bahaafathi';
+  static const emailUrl =
+      'mailto:BahaaFathi@outlook.sa?subject=About Anime Slayer!';
+
+  static const changelog = 'https://raw.githubusercontent.com/bahaafathi';
+  static const appSource = 'https://github.com/bahaafathi/AnimeSlayer';
+  static const apiSource = 'jikan.docs.apiary.io/';
+  static const flutterPage = 'https://flutter.dev';
 }
 
 Map<Category, String> animeCategoryMap = {

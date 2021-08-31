@@ -8,6 +8,7 @@ import 'package:myanime/ui/taps/top.dart';
 import 'package:myanime/ui/taps/upcoming.dart';
 
 class StartScreen extends StatefulWidget {
+  static const route = '/';
   @override
   _StartScreenState createState() => _StartScreenState();
 }

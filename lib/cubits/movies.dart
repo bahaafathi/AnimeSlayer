@@ -1,10 +1,10 @@
 import 'package:flutter_request_bloc/cubits/request_cubit.dart';
 import 'package:flutter_request_bloc/cubits/request_state.dart';
-import 'package:myanime/models/movies.dart';
+import 'package:myanime/models/category.dart';
 import 'package:myanime/repositories/movies.dart';
 
 /// Cubit that holds information about Top Anime.
-class MoviesCubit extends RequestCubit<MoviesRepository, Movies> {
+class MoviesCubit extends RequestCubit<MoviesRepository, CategoryModel> {
   MoviesCubit(MoviesRepository repository) : super(repository);
 
   @override

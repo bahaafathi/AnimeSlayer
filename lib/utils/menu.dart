@@ -1,9 +1,12 @@
+import 'package:myanime/ui/general/about.dart';
+import 'package:myanime/ui/general/settings.dart';
+
 /// Contains all possible popupmenus' strings
 class Menu {
-  // static const home = {
-  //   'app.menu.about': AboutScreen.route,
-  //   'app.menu.settings': SettingsScreen.route,
-  // };
+  static const home = {
+    'app.menu.about': AboutScreen.route,
+    'app.menu.settings': SettingsScreen.route,
+  };
 
   static const launch = [
     'spacex.launch.menu.reddit',

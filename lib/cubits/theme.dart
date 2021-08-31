@@ -12,7 +12,7 @@ final Map<ThemeState, ThemeData> _themeData = {
 
 /// Saves and loads information regarding the theme setting.
 class ThemeCubit extends HydratedCubit<ThemeState> {
-  static const defaultTheme = ThemeState.system;
+  static const defaultTheme = ThemeState.black;
 
   ThemeCubit() : super(defaultTheme);
 

@@ -1,16 +1,16 @@
-class Upcoming {
+class CategoryModel {
   String requestHash;
   bool requestCached;
   int requestCacheExpiry;
   List<Top> top;
 
-  Upcoming(
+  CategoryModel(
       {this.requestHash,
       this.requestCached,
       this.requestCacheExpiry,
       this.top});
 
-  Upcoming.fromJson(Map<String, dynamic> json) {
+  CategoryModel.fromJson(Map<String, dynamic> json) {
     requestHash = json['request_hash'];
     requestCached = json['request_cached'];
     requestCacheExpiry = json['request_cache_expiry'];

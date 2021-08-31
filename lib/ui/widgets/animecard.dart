@@ -10,7 +10,7 @@ class AnimeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Navigator.pushNamed(context, DetailsPage.route),
+      onTap: () => null,
       child: new Container(
         margin: EdgeInsets.all(5),
         child: Column(

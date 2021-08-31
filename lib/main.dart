@@ -38,12 +38,14 @@ import 'cubits/movies.dart';
 import 'cubits/theme.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   final httpClient = Dio();
   HydratedBloc.storage = await HydratedStorage.build(
     storageDirectory: kIsWeb
         ? HydratedStorage.webStorageDirectory
         : await getTemporaryDirectory(),
   );
+
   runApp(
     MyApp(
       moviesRepository: MoviesRepository(MoviesService(httpClient)),
@@ -55,7 +57,6 @@ void main() async {
       changelogRepository: ChangelogRepository(ChangelogService(httpClient)),
     ),
   );
-  WidgetsFlutterBinding.ensureInitialized();
 
   Bloc.observer = MyBlocObserver();
 }

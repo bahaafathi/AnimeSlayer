@@ -100,7 +100,7 @@ class AnimeGridView extends StatelessWidget {
       onLoaded: (context, state, value) => SliverGrid(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,
-          childAspectRatio: 0.5,
+          childAspectRatio: 0.7,
         ),
         delegate: SliverChildBuilderDelegate(
           (BuildContext context, int index) {

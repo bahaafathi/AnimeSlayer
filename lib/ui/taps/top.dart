@@ -13,6 +13,7 @@ import 'package:myanime/utils/photos.dart';
 import 'package:myanime/utils/url.dart';
 import 'package:search_page/search_page.dart';
 import '../../utils/translate.dart';
+import '../widgets/loading_view.dart';
 
 class TopTap extends StatelessWidget {
   @override
@@ -100,9 +101,10 @@ class AnimeGridView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RequestBuilder<TopCubit, CategoryModel>(
+      onLoading: (context, state, value) => LoadingSliverView(),
       onLoaded: (context, state, value) => SliverGrid(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3, childAspectRatio: 0.5),
+            crossAxisCount: 3, childAspectRatio: 0.7),
         delegate: SliverChildBuilderDelegate(
           (BuildContext context, int index) {
             return AnimeCard(

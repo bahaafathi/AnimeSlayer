@@ -1,6 +1,7 @@
 import 'package:cherry_components/cherry_components.dart';
 import 'package:flutter/material.dart';
 import 'package:myanime/models/category.dart';
+import 'package:myanime/ui/detailsscreen/details.dart';
 import 'package:myanime/ui/widgets/profile_image.dart';
 import 'package:row_collection/row_collection.dart';
 
@@ -19,7 +20,8 @@ class AnimeCell extends StatelessWidget {
         ),
         title: top.title,
         subtitle: top.startDate,
-        onTap: () => null,
+        onTap: () => Navigator.pushNamed(context, DetailsPage.route,
+                    arguments: top.malId),
       ),
       Separator.divider(indent: 72)
     ]);

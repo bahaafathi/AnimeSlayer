@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_request_bloc/widgets/request_builder.dart';
 import 'package:myanime/cubits/top.dart';
 import 'package:myanime/models/category.dart';
+import 'package:myanime/models/details.dart';
+import 'package:myanime/ui/detailsscreen/details.dart';
 import 'package:myanime/ui/widgets/vehicle_cell.dart';
 import 'package:myanime/ui/widgets/animecard.dart';
 import 'package:myanime/ui/widgets/custom_page.dart';

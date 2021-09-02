@@ -1,6 +1,7 @@
 import 'package:cherry_components/cherry_components.dart';
 import 'package:expand_widget/expand_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_request_bloc/widgets/request_builder.dart';
 import 'package:myanime/cubits/details.dart';
 import 'package:myanime/models/details.dart';
@@ -9,15 +10,16 @@ import 'package:myanime/ui/widgets/loading_view.dart';
 import 'package:myanime/ui/widgets/sliver_bar.dart';
 import 'package:myanime/utils/menu.dart';
 import 'package:myanime/utils/photos.dart';
-import 'package:provider/provider.dart';
 import 'package:row_collection/row_collection.dart';
 import 'package:row_item/row_item.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../utils/translate.dart';
-import '../../utils/browser.dart';
 
 /// This view all information about a Falcon rocket model. It displays RocketInfo's specs.
 class DetailsPage extends StatefulWidget {
+  int id;
+  DetailsPage({@required this.id});
+
   static const route = 'detailsPage';
 
   @override
@@ -25,11 +27,11 @@ class DetailsPage extends StatefulWidget {
 }
 
 class _DetailsPageState extends State<DetailsPage> {
-  // @override
-  // void initState() {
-  //   context.watch<DetailsCubit>().loadData(id: 1);
-  //   super.initState();
-  // }
+  @override
+  void initState() {
+    context.read<DetailsCubit>().loadData(id: widget.id);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,6 +90,11 @@ class _DetailsPageState extends State<DetailsPage> {
             onInit: (context, state) =>
                 SliverToBoxAdapter(child: Text('Iniiit')),
             onLoading: (context, state, value) => LoadingSliverView(),
+            onError: (context, state, errorMessage) => SliverToBoxAdapter(
+              child: ErrorWidget(
+                errorMessage,
+              ),
+            ),
           ),
         ],
       ),
@@ -117,7 +124,7 @@ class _DetailsPageState extends State<DetailsPage> {
           details.airing,
         ),
         Separator.divider(),
-        ExpandText(details.background)
+        ExpandText(details.background ?? 'Null From Api')
       ]),
     );
   }

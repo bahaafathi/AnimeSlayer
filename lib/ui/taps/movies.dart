@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_request_bloc/widgets/request_builder.dart';
 import 'package:myanime/cubits/movies.dart';
 import 'package:myanime/models/category.dart';
+import 'package:myanime/ui/widgets/animecard.dart';
 import 'package:myanime/ui/widgets/custom_page.dart';
 import 'package:myanime/ui/widgets/header_swiper.dart';
 import 'package:myanime/ui/widgets/loading_view.dart';
@@ -106,22 +107,9 @@ class AnimeGridView extends StatelessWidget {
         ),
         delegate: SliverChildBuilderDelegate(
           (BuildContext context, int index) {
-            return InkWell(
-              onTap: () => null,
-              child: new Container(
-                margin: EdgeInsets.all(5),
-                child: Column(
-                  children: [
-                    Expanded(
-                      flex: 5,
-                      child: Image.network(
-                        value.top[index].imageUrl,
-                        fit: BoxFit.fill,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+            return AnimeCard(
+              id: value.top[index].malId,
+              imageUrl: value.top[index].imageUrl,
             );
           },
           childCount: value.top.length,

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_request_bloc/services/base.dart';
@@ -9,6 +11,7 @@ class DetailsService extends BaseService<Dio> {
   ) : super(client);
 
   Future<Response> getDetails({@required int id, Request request}) async {
+    print(Url.animeDetailsUrl(id: id, request: request));
     return client.get(Url.animeDetailsUrl(id: id, request: request));
   }
 }

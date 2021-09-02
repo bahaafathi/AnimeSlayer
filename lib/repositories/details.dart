@@ -12,6 +12,8 @@ class DetailsRepository extends BaseRepository<DetailsService, Details> {
   @override
   Future<Details> fetchData({@required int id, Request request}) async {
     final response = await service.getDetails(id: id, request: request);
+    final picturesresponse =
+        await service.getDetails(id: id, request: Request.pictures);
 
     return Details.fromJson(response.data);
   }

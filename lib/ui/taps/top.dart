@@ -18,7 +18,6 @@ import '../widgets/loading_view.dart';
 class TopTap extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print(Url.animeDetailsUrl(id: 1));
     return Scaffold(
       body: RequestSliverPage<TopCubit, CategoryModel>(
         popupMenu: Menu.home,
@@ -108,6 +107,7 @@ class AnimeGridView extends StatelessWidget {
         delegate: SliverChildBuilderDelegate(
           (BuildContext context, int index) {
             return AnimeCard(
+              id: value.top[index].malId,
               imageUrl: value.top[index].imageUrl,
             );
           },

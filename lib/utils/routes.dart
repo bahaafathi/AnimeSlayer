@@ -13,7 +13,7 @@ class Routes {
   /// Methods that generate all routes
   static Route<dynamic> generateRoute(RouteSettings routeSettings) {
     try {
-      final Map<String, dynamic> args = routeSettings.arguments;
+      final int id = routeSettings.arguments;
 
       switch (routeSettings.name) {
         case StartScreen.route:
@@ -42,7 +42,9 @@ class Routes {
         case DetailsPage.route:
           return MaterialPageRoute(
             settings: routeSettings,
-            builder: (_) => DetailsPage(),
+            builder: (_) => DetailsPage(
+              id: id,
+            ),
           );
 
         default:

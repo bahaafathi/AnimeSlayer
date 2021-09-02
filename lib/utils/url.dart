@@ -8,7 +8,10 @@ class Url {
   // A single anime object with all its details
   //Endpoint Path: /anime/{id}(/request)
   static String animeDetailsUrl({@required int id, Request request}) {
-    return '$jikanBaseUrl/anime/$id/${request != null ? animeDetailsMap[request] : '/'}';
+    //return '$jikanBaseUrl/anime/$id/${request != null ? animeDetailsMap[request] : null}';
+    return request != null
+        ? '$jikanBaseUrl/anime/$id/${animeDetailsMap[request]}'
+        : '$jikanBaseUrl/anime/$id';
   }
 
   static String animeCategoryUrl({@required Category category}) {

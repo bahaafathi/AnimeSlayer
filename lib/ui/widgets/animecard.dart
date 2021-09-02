@@ -2,15 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:myanime/ui/detailsscreen/details.dart';
+import '../../ui/detailsscreen/details.dart';
 
 class AnimeCard extends StatelessWidget {
   final String imageUrl;
-  const AnimeCard({@required this.imageUrl});
+  final int id;
+  const AnimeCard({@required this.imageUrl, @required this.id});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => null,
+      onTap: () =>
+          Navigator.pushNamed(context, DetailsPage.route, arguments: id),
       child: new Container(
         margin: EdgeInsets.all(5),
         child: Column(

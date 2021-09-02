@@ -142,8 +142,8 @@ class Aired {
     this.string,
   });
 
-  DateTime from;
-  DateTime to;
+  String from;
+  String to;
   Prop prop;
   String string;
 
@@ -196,7 +196,7 @@ class Genre {
   });
 
   int malId;
-  Type type;
+  String type;
   String name;
   String url;
   Genre.fromJson(Map<String, dynamic> json) {

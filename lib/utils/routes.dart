@@ -4,6 +4,7 @@ import 'package:myanime/ui/general/about.dart';
 import 'package:myanime/ui/general/changelog.dart';
 import 'package:myanime/ui/general/error.dart';
 import 'package:myanime/ui/general/settings.dart';
+import 'package:myanime/ui/searchscrren.dart';
 import 'package:myanime/ui/start.dart';
 import 'package:myanime/ui/widgets/responsive_page.dart';
 
@@ -21,6 +22,11 @@ class Routes {
             settings: routeSettings,
             builder: (_) => StartScreen(),
           );
+        // case SearchScreen.route:
+        //   return MaterialPageRoute(
+        //     settings: routeSettings,
+        //     builder: (_) => SearchScreen(),
+        //   );
 
         case AboutScreen.route:
           return MaterialPageRoute(

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +14,8 @@ import 'package:myanime/repositories/changelog.dart';
 import 'package:myanime/repositories/details.dart';
 import 'package:myanime/repositories/movies.dart';
 import 'package:myanime/repositories/ova.dart';
+import 'package:myanime/repositories/pictures.dart';
+import 'package:myanime/repositories/search.dart';
 import 'package:myanime/repositories/special.dart';
 import 'package:myanime/repositories/top.dart';
 import 'package:myanime/repositories/upcoming.dart';
@@ -23,6 +23,7 @@ import 'package:myanime/services/changelog.dart';
 import 'package:myanime/services/details.dart';
 import 'package:myanime/services/movie.dart';
 import 'package:myanime/services/ova.dart';
+import 'package:myanime/services/search.dart';
 import 'package:myanime/services/special.dart';
 import 'package:myanime/services/top.dart';
 import 'package:myanime/services/upcoming.dart';
@@ -37,6 +38,8 @@ import 'cubits/browser.dart';
 import 'cubits/details.dart';
 import 'cubits/image_quality.dart';
 import 'cubits/movies.dart';
+import 'cubits/pictures.dart';
+import 'cubits/search.dart';
 import 'cubits/theme.dart';
 
 void main() async {
@@ -57,6 +60,8 @@ void main() async {
       upcomingRepository: UpcomingRepository(UpcomingService(httpClient)),
       detailsRepository: DetailsRepository(DetailsService(httpClient)),
       changelogRepository: ChangelogRepository(ChangelogService(httpClient)),
+      searchRepository: SearchRepository(SearchService(httpClient)),
+      picturesRepository: PicturesRepository(DetailsService(httpClient)),
     ),
   );
 
@@ -66,6 +71,11 @@ void main() async {
   // var data = await DetailsRepository(DetailsService(Dio())).fetchData(id: 1);
   // print(data.title);
   // print('_________________________________________');
+  // var data = await SearchRepository(SearchService(httpClient)).fetchData();
+  // print(data.results[0].title);
+  var data =
+      await PicturesRepository(DetailsService(httpClient)).fetchData(id: 1);
+  print(data.pictures[0].large);
 }
 
 class MyApp extends StatelessWidget {
@@ -76,7 +86,8 @@ class MyApp extends StatelessWidget {
   final OvaRepository ovaRepository;
   final ChangelogRepository changelogRepository;
   final DetailsRepository detailsRepository;
-
+  final SearchRepository searchRepository;
+  final PicturesRepository picturesRepository;
   const MyApp({
     Key key,
     this.moviesRepository,
@@ -86,6 +97,8 @@ class MyApp extends StatelessWidget {
     this.changelogRepository,
     this.ovaRepository,
     this.detailsRepository,
+    this.searchRepository,
+    this.picturesRepository,
   }) : super(key: key);
 
   @override
@@ -96,12 +109,14 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (_) => ChangelogCubit(changelogRepository)),
           BlocProvider(create: (_) => ImageQualityCubit()),
           BlocProvider(create: (_) => BrowserCubit()),
+          BlocProvider(create: (_) => SearchCubit(searchRepository)),
           BlocProvider(create: (_) => ThemeCubit()),
           BlocProvider(create: (_) => MoviesCubit(moviesRepository)),
           BlocProvider(create: (_) => TopCubit(topRepository)),
           BlocProvider(create: (_) => SpecialCubit(specialRepository)),
           BlocProvider(create: (_) => UpcomingCubit(upcomingRepository)),
           BlocProvider(create: (_) => OvaCubit(ovaRepository)),
+          BlocProvider(create: (_) => PicturesCubit(picturesRepository)),
         ],
         child: BlocConsumer<ThemeCubit, ThemeState>(
           listener: null,

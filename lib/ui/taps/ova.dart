@@ -81,7 +81,7 @@ class OvaTap extends StatelessWidget {
                   top.startDate,
                   top.type,
                 ],
-                builder: (top) => AnimeCell(top),
+                //    builder: (top) => AnimeCell(top),
               ),
             ),
             child: Icon(Icons.search),

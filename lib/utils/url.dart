@@ -18,6 +18,10 @@ class Url {
     return '$jikanBaseUrl/top/anime/1/${animeCategoryMap[category]}';
   }
 
+  static String search({@required String query}) {
+    return '$jikanBaseUrl/search/anime?q=$query';
+  }
+
   // About page
   static const authorProfile = 'https://twitter.com/bahaafathi';
   static const authorPatreon = 'https://www.patreon.com/bahaafathi';

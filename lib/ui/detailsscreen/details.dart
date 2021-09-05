@@ -4,22 +4,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_request_bloc/widgets/request_builder.dart';
 import 'package:myanime/cubits/details.dart';
+import 'package:myanime/cubits/pictures.dart';
 import 'package:myanime/models/details.dart';
+import 'package:myanime/models/pictures.dart';
+import 'package:myanime/ui/widgets/custom_page.dart';
 import 'package:myanime/ui/widgets/header_swiper.dart';
 import 'package:myanime/ui/widgets/loading_view.dart';
-import 'package:myanime/ui/widgets/sliver_bar.dart';
 import 'package:myanime/utils/browser.dart';
 import 'package:myanime/utils/menu.dart';
-import 'package:myanime/utils/photos.dart';
 import 'package:row_collection/row_collection.dart';
 import 'package:row_item/row_item.dart';
-import 'package:share_plus/share_plus.dart';
-import '../../utils/translate.dart';
+
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 /// This view all information about a Falcon rocket model. It displays RocketInfo's specs.
 class DetailsPage extends StatefulWidget {
-  int id;
+  final int id;
   DetailsPage({@required this.id});
 
   static const route = 'detailsPage';
@@ -32,50 +32,23 @@ class _DetailsPageState extends State<DetailsPage> {
   @override
   void initState() {
     context.read<DetailsCubit>().loadData(id: widget.id);
+    context.read<PicturesCubit>().loadData(id: widget.id);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CustomScrollView(
-        slivers: <Widget>[
-          SliverBar(
-            title: 'Test Tilte',
-            header: SwiperHeader(
-              list: SpaceXPhotos.company,
-              builder: (_, index) => CacheImage(SpaceXPhotos.company[index]),
-            ),
-            actions: <Widget>[
-              IconButton(
-                icon: IconShadow(Icons.adaptive.share),
-                onPressed: () => Share.share(
-                  context.translate(
-                    'spacex.other.share.rocket',
-                    parameters: {
-                      // 'name': _rocket.name,
-                      // 'height': _rocket.getHeight,
-                      // 'engines': _rocket.firstStage.engines.toString(),
-                      // 'type': _rocket.engine.getName,
-                      // 'thrust': _rocket.firstStage.getThrust,
-                      // 'payload': _rocket.payloadWeights[0].getMass,
-                      // 'orbit': _rocket.payloadWeights[0].name,
-                      // 'details': Url.shareDetails
-                    },
-                  ),
-                ),
-                tooltip: context.translate('spacex.other.menu.share'),
-              ),
-            ],
-            menuItemBuilder: (context) => [
-              for (final item in Menu.wikipedia)
-                PopupMenuItem(
-                  value: item,
-                  child: Text(context.translate(item)),
-                )
-            ],
-            //onMenuItemSelected: (text) => context.openUrl(_rocket.url),
-          ),
+      key: GlobalKey<ScaffoldState>(),
+      body: RequestSliverPage<PicturesCubit, AnimePictures>(
+        popupMenu: Menu.home,
+        title: 'context.read<DetailsCubit>().state.value.title',
+        headerBuilder: (context, state, value) {
+          final photos = [for (final anime in value.pictures) anime.large];
+
+          return SwiperHeader(list: photos);
+        },
+        childrenBuilder: (context, state, value) => [
           RequestBuilder<DetailsCubit, Details>(
             onLoaded: (context, state, value) => SliverSafeArea(
               top: false,
@@ -109,7 +82,7 @@ class _DetailsPageState extends State<DetailsPage> {
         controller: YoutubePlayerController(
           initialVideoId: YoutubePlayer.convertUrlToId(details.trailerUrl),
           flags: YoutubePlayerFlags(
-            autoPlay: true,
+            autoPlay: false,
             mute: false,
             hideControls: true,
           ),

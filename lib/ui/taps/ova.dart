@@ -18,75 +18,14 @@ class OvaTap extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: RequestSliverPage<OvaCubit, CategoryModel>(
-          popupMenu: Menu.home,
-          title: 'Ova',
-          headerBuilder: (context, state, value) =>
-              SwiperHeader(list: List.from(SpaceXPhotos.company)..shuffle()),
-          childrenBuilder: (context, state, value) => [AnimeGridView()],
-        ),
-        floatingActionButton: RequestBuilder<OvaCubit, CategoryModel>(
-          onLoaded: (context, state, value) => FloatingActionButton(
-            heroTag: null,
-            tooltip: context.translate(
-              'spacex.other.tooltip.search',
-            ),
-            onPressed: () => showSearch(
-              context: context,
-              delegate: SearchPage<Top>(
-                items: value.top,
-                searchLabel: context.translate(
-                  'spacex.other.tooltip.search',
-                ),
-                suggestion: BigTip(
-                  title: Text(
-                    context.translate(
-                      'spacex.vehicle.title',
-                    ),
-                    style: Theme.of(context).textTheme.headline6.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                  subtitle: Text(
-                    context.translate(
-                      'spacex.search.suggestion.vehicle',
-                    ),
-                    style: Theme.of(context).textTheme.subtitle1.copyWith(
-                          color: Theme.of(context).textTheme.caption.color,
-                        ),
-                  ),
-                  child: Icon(Icons.search),
-                ),
-                failure: BigTip(
-                  title: Text(
-                    context.translate(
-                      'spacex.vehicle.title',
-                    ),
-                    style: Theme.of(context).textTheme.headline6.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                  subtitle: Text(
-                    context.translate(
-                      'spacex.search.failure',
-                    ),
-                    style: Theme.of(context).textTheme.subtitle1.copyWith(
-                          color: Theme.of(context).textTheme.caption.color,
-                        ),
-                  ),
-                  child: Icon(Icons.sentiment_dissatisfied),
-                ),
-                filter: (top) => [
-                  top.title,
-                  top.startDate,
-                  top.type,
-                ],
-                //    builder: (top) => AnimeCell(top),
-              ),
-            ),
-            child: Icon(Icons.search),
-          ),
-        ));
+      body: RequestSliverPage<OvaCubit, CategoryModel>(
+        popupMenu: Menu.home,
+        title: 'Ova',
+        headerBuilder: (context, state, value) =>
+            SwiperHeader(list: List.from(SpaceXPhotos.company)..shuffle()),
+        childrenBuilder: (context, state, value) => [AnimeGridView()],
+      ),
+    );
   }
 }
 
@@ -105,6 +44,7 @@ class AnimeGridView extends StatelessWidget {
         delegate: SliverChildBuilderDelegate(
           (BuildContext context, int index) {
             return new AnimeCard(
+              title: value.top[index].title,
               id: value.top[index].malId,
               imageUrl: value.top[index].imageUrl,
             );

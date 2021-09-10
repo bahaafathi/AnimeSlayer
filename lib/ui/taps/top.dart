@@ -1,21 +1,15 @@
-import 'package:big_tip/big_tip.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_request_bloc/widgets/request_builder.dart';
-import 'package:myanime/cubits/search.dart';
 import 'package:myanime/cubits/top.dart';
 import 'package:myanime/models/category.dart';
-import 'package:myanime/models/search.dart';
 import 'package:myanime/ui/searchscrren.dart';
 
-import 'package:myanime/ui/widgets/vehicle_cell.dart';
 import 'package:myanime/ui/widgets/animecard.dart';
 import 'package:myanime/ui/widgets/custom_page.dart';
 import 'package:myanime/ui/widgets/header_swiper.dart';
 import 'package:myanime/utils/menu.dart';
 import 'package:myanime/utils/photos.dart';
-import 'package:search_page/search_page.dart';
 import '../../utils/translate.dart';
 import '../widgets/loading_view.dart';
 
@@ -28,7 +22,9 @@ class TopTap extends StatelessWidget {
         title: 'Top Animes',
         headerBuilder: (context, state, value) =>
             SwiperHeader(list: List.from(SpaceXPhotos.company)..shuffle()),
-        childrenBuilder: (context, state, value) => [AnimeGridView()],
+        childrenBuilder: (context, state, value) => [
+          AnimeGridView(),
+        ],
       ),
       floatingActionButton: RequestBuilder<TopCubit, CategoryModel>(
         onLoaded: (context, state, value) => FloatingActionButton(
@@ -65,6 +61,7 @@ class AnimeGridView extends StatelessWidget {
             return AnimeCard(
               id: value.top[index].malId,
               imageUrl: value.top[index].imageUrl,
+              title:value.top[index].title,
             );
           },
           childCount: value.top.length,

@@ -21,8 +21,19 @@ class AnimeCell extends StatelessWidget {
         ),
         title: results.title,
         subtitle: results.startDate,
-        onTap: () => Navigator.pushNamed(context, DetailsPage.route,
-            arguments: results.malId),
+        onTap: () {
+          print(results.malId);
+          print(results.title);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => DetailsPage(
+                id: results.malId,
+                title: results.title,
+              ),
+            ),
+          );
+        },
       ),
       Separator.divider(indent: 72)
     ]);

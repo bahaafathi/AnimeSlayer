@@ -13,7 +13,7 @@ class SliverBar extends StatelessWidget {
   final List<Widget> actions;
   final PopupMenuItemBuilder<String> menuItemBuilder;
   final PopupMenuItemSelected<String> onMenuItemSelected;
-
+  final PreferredSizeWidget bottom;
   const SliverBar({
     this.title,
     this.header,
@@ -21,6 +21,7 @@ class SliverBar extends StatelessWidget {
     this.actions,
     this.menuItemBuilder,
     this.onMenuItemSelected,
+    this.bottom,
   });
 
   @override
@@ -30,6 +31,7 @@ class SliverBar extends StatelessWidget {
         parentRoute is PageRoute<dynamic> && parentRoute.fullscreenDialog;
 
     return SliverAppBar(
+      bottom: bottom,
       centerTitle: true,
       title: Text(
         title,

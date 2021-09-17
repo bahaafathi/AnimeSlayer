@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
+import 'package:myanime/ui/searchscrren.dart';
 
 import 'package:myanime/ui/taps/movies.dart';
 import 'package:myanime/ui/taps/ova.dart';
@@ -19,13 +21,16 @@ class _StartScreenState extends State<StartScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(index: _currentIndex, children: [
-        TopTap(),
-        MoviesTap(),
-        UpcomingTap(),
-        SpecialTap(),
-        OvaTap(),
-      ]),
+      body: IndexedStack(
+        index: _currentIndex,
+        children: [
+          TopTap(),
+          MoviesTap(),
+          UpcomingTap(),
+          SearchScreen(),
+          OvaTap(),
+        ],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Theme.of(context).brightness == Brightness.light
             ? Theme.of(context).primaryColor
@@ -37,24 +42,24 @@ class _StartScreenState extends State<StartScreen> {
         currentIndex: _currentIndex,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            label: 'Top',
-            icon: Icon(Icons.home),
+            label: 'Anime',
+            icon: Icon(Ionicons.play_outline),
           ),
           BottomNavigationBarItem(
-            label: 'Movies',
-            icon: Icon(Icons.movie),
+            label: 'Manga',
+            icon: Icon(Ionicons.book_outline),
           ),
           BottomNavigationBarItem(
             label: 'Upcoming',
             icon: Icon(Icons.access_time),
           ),
           BottomNavigationBarItem(
-            label: 'Special',
-            icon: Icon(Icons.library_books),
+            label: 'Search',
+            icon: Icon(Ionicons.search_outline),
           ),
           BottomNavigationBarItem(
-            label: 'Ova',
-            icon: Icon(Icons.location_city),
+            label: 'My List',
+            icon: Icon(Ionicons.bookmark_outline),
           ),
         ],
       ),

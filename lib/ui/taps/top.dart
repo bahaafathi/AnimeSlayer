@@ -18,12 +18,15 @@ class TopTap extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: RequestSliverPage<TopCubit, CategoryModel>(
+        isTaped: false,
         popupMenu: Menu.home,
         title: 'Top Animes',
         headerBuilder: (context, state, value) =>
             SwiperHeader(list: List.from(SpaceXPhotos.company)..shuffle()),
         childrenBuilder: (context, state, value) => [
-          AnimeGridView(),
+          AnimeGridView(
+            value: value,
+          ),
         ],
       ),
       floatingActionButton: RequestBuilder<TopCubit, CategoryModel>(
@@ -32,11 +35,7 @@ class TopTap extends StatelessWidget {
           tooltip: context.translate(
             'spacex.other.tooltip.search',
           ),
-          onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => SearchScreen(),
-              )),
+          onPressed: () => Navigator.pushNamed(context, SearchScreen.route),
           child: Icon(Icons.search),
         ),
       ),
@@ -45,27 +44,27 @@ class TopTap extends StatelessWidget {
 }
 
 class AnimeGridView extends StatelessWidget {
+  final value;
   const AnimeGridView({
     Key key,
+    @required this.value,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return RequestBuilder<TopCubit, CategoryModel>(
-      onLoading: (context, state, value) => LoadingSliverView(),
-      onLoaded: (context, state, value) => SliverGrid(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3, childAspectRatio: 0.7),
-        delegate: SliverChildBuilderDelegate(
-          (BuildContext context, int index) {
-            return AnimeCard(
-              id: value.top[index].malId,
-              imageUrl: value.top[index].imageUrl,
-              title:value.top[index].title,
-            );
-          },
-          childCount: value.top.length,
-        ),
+    return SliverGrid(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3, childAspectRatio: 0.7),
+      delegate: SliverChildBuilderDelegate(
+        (BuildContext context, int index) {
+          return AnimeCard(
+            cliced: true,
+            id: value.top[index].malId,
+            imageUrl: value.top[index].imageUrl,
+            title: value.top[index].title,
+          );
+        },
+        childCount: value.top.length,
       ),
     );
   }

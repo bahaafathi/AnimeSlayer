@@ -1,6 +1,5 @@
 import 'package:cherry_components/cherry_components.dart';
 import 'package:flutter/material.dart';
-import 'package:myanime/models/category.dart';
 import 'package:myanime/models/search.dart';
 import 'package:myanime/ui/detailsscreen/details.dart';
 import 'package:myanime/ui/widgets/profile_image.dart';
@@ -24,14 +23,13 @@ class AnimeCell extends StatelessWidget {
         onTap: () {
           print(results.malId);
           print(results.title);
-          Navigator.push(
+          Navigator.pushNamed(
             context,
-            MaterialPageRoute(
-              builder: (context) => DetailsPage(
-                id: results.malId,
-                title: results.title,
-              ),
-            ),
+            DetailsPage.route,
+            arguments: {
+              'id': results.malId,
+              'title': results.title,
+            },
           );
         },
       ),

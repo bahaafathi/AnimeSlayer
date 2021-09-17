@@ -48,6 +48,7 @@ Map<Request, String> animeDetailsMap = {
   Request.recommendations: 'recommendations',
   Request.reviews: 'reviews',
   Request.videos: 'videos',
+  Request.news: 'news',
 };
 enum Request {
   characters_staff,

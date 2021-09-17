@@ -91,7 +91,9 @@ class SliverPage extends StatelessWidget {
   final List<Widget> children, actions;
   final Map<String, String> popupMenu;
   final ScrollController controller;
-
+  final PreferredSizeWidget bottom;
+  final Widget tabbarBody;
+  final bool isTaped;
   const SliverPage({
     @required this.title,
     @required this.header,
@@ -99,37 +101,74 @@ class SliverPage extends StatelessWidget {
     this.actions,
     this.popupMenu,
     this.controller,
+    this.bottom,
+    this.tabbarBody,
+    this.isTaped = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      key: PageStorageKey(title),
-      controller: controller,
-      slivers: <Widget>[
-        SliverBar(
-          title: title,
-          header: header,
-          actions: <Widget>[
-            if (popupMenu != null)
-              PopupMenuButton<String>(
-                itemBuilder: (context) => [
-                  for (final item in popupMenu.keys)
-                    PopupMenuItem(
-                      value: item,
-                      child: Text(FlutterI18n.translate(context, item)),
-                    )
+    tabbarBody == null
+        ? print('nullllllllllllllllllll')
+        : print('not nullllllllllllllll');
+    return isTaped
+        ? NestedScrollView(
+            body: tabbarBody,
+            headerSliverBuilder: (context, innerBoxIsScrolled) => <Widget>[
+              SliverBar(
+                bottom: bottom,
+                title: title,
+                header: header,
+                actions: <Widget>[
+                  if (popupMenu != null)
+                    PopupMenuButton<String>(
+                      itemBuilder: (context) => [
+                        for (final item in popupMenu.keys)
+                          PopupMenuItem(
+                            value: item,
+                            child: Text(FlutterI18n.translate(context, item)),
+                          )
+                      ],
+                      onSelected: (text) =>
+                          Navigator.pushNamed(context, popupMenu[text]),
+                      icon: IconShadow(Icons.adaptive.more),
+                    ),
+                  if (actions != null) ...actions,
                 ],
-                onSelected: (text) =>
-                    Navigator.pushNamed(context, popupMenu[text]),
-                icon: IconShadow(Icons.adaptive.more),
               ),
-            if (actions != null) ...actions,
-          ],
-        ),
-        ...children,
-      ],
-    );
+              ...children,
+            ],
+            key: PageStorageKey(title),
+            controller: controller,
+          )
+        : CustomScrollView(
+            slivers: <Widget>[
+              SliverBar(
+                bottom: bottom,
+                title: title,
+                header: header,
+                actions: <Widget>[
+                  if (popupMenu != null)
+                    PopupMenuButton<String>(
+                      itemBuilder: (context) => [
+                        for (final item in popupMenu.keys)
+                          PopupMenuItem(
+                            value: item,
+                            child: Text(FlutterI18n.translate(context, item)),
+                          )
+                      ],
+                      onSelected: (text) =>
+                          Navigator.pushNamed(context, popupMenu[text]),
+                      icon: IconShadow(Icons.adaptive.more),
+                    ),
+                  if (actions != null) ...actions,
+                ],
+              ),
+              ...children,
+            ],
+            key: PageStorageKey(title),
+            controller: controller,
+          );
   }
 }
 
@@ -144,29 +183,44 @@ class RequestSliverPage<C extends RequestCubit, T> extends StatelessWidget {
   final List<Widget> actions;
   final Map<String, String> popupMenu;
   final ScrollController controller;
-
+  final PreferredSizeWidget bottom;
+  final Widget tabbarBody;
+  final bool isTaped;
   const RequestSliverPage({
     @required this.title,
     @required this.headerBuilder,
-    @required this.childrenBuilder,
+    this.childrenBuilder,
     this.controller,
     this.actions,
     this.popupMenu,
+    this.bottom,
+    this.tabbarBody,
+    @required this.isTaped,
   });
 
   @override
   Widget build(BuildContext context) {
+    tabbarBody == null
+        ? print('RequestSliverPage nullllll')
+        : print('RequestSliverPage not nulllllll');
+
     return RefreshIndicator(
       onRefresh: () => context.read<C>().loadData(),
       child: RequestBuilder<C, T>(
         onInit: (context, state) => SliverPage(
+          isTaped: isTaped,
           controller: controller,
           title: title,
           header: Separator.none(),
           actions: actions,
           popupMenu: popupMenu,
+          bottom: bottom,
+          tabbarBody: tabbarBody,
         ),
         onLoading: (context, state, value) => SliverPage(
+          isTaped: isTaped,
+          bottom: bottom,
+          tabbarBody: tabbarBody,
           controller: controller,
           title: title,
           header: Separator.none(),
@@ -175,14 +229,20 @@ class RequestSliverPage<C extends RequestCubit, T> extends StatelessWidget {
           children: [LoadingSliverView()],
         ),
         onLoaded: (context, state, value) => SliverPage(
+          isTaped: isTaped,
           controller: controller,
           title: title,
           header: headerBuilder(context, state, value),
           actions: actions,
           popupMenu: popupMenu,
           children: childrenBuilder(context, state, value),
+          bottom: bottom,
+          tabbarBody: tabbarBody,
         ),
         onError: (context, state, error) => SliverPage(
+          isTaped: isTaped,
+          // bottom: bottom,
+          tabbarBody: tabbarBody,
           controller: controller,
           title: title,
           header: Separator.none(),

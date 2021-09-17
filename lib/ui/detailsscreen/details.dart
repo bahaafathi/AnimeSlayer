@@ -1,14 +1,28 @@
 import 'package:cherry_components/cherry_components.dart';
 import 'package:expand_widget/expand_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_request_bloc/widgets/request_builder.dart';
+import 'package:myanime/cubits/characterstuff.dart';
 import 'package:myanime/cubits/details.dart';
+import 'package:myanime/cubits/episodes.dart';
+import 'package:myanime/cubits/news.dart';
+import 'package:myanime/cubits/overview.dart';
 import 'package:myanime/cubits/pictures.dart';
+import 'package:myanime/cubits/recommendation.dart';
+import 'package:myanime/cubits/review.dart';
+import 'package:myanime/models/characters.dart';
 import 'package:myanime/models/details.dart';
+import 'package:myanime/models/episode.dart';
+import 'package:myanime/models/news.dart';
 import 'package:myanime/models/pictures.dart';
+import 'package:myanime/models/recommendation.dart';
+import 'package:myanime/models/review.dart';
+import 'package:myanime/ui/widgets/animecard.dart';
 import 'package:myanime/ui/widgets/custom_page.dart';
 import 'package:myanime/ui/widgets/header_swiper.dart';
 import 'package:myanime/ui/widgets/loading_view.dart';
+import 'package:myanime/ui/widgets/profile_image.dart';
 import 'package:myanime/utils/browser.dart';
 import 'package:myanime/utils/menu.dart';
 import 'package:row_collection/row_collection.dart';
@@ -16,53 +30,177 @@ import 'package:row_item/row_item.dart';
 
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-/// This view all information about a Falcon rocket model. It displays RocketInfo's specs.
-class DetailsPage extends StatelessWidget {
+class DetailsPage extends StatefulWidget {
   final int id;
   final String title;
   DetailsPage({@required this.id, @required this.title});
 
   static const route = 'detailsPage';
 
+  @override
+  _DetailsPageState createState() => _DetailsPageState();
+}
+
+class _DetailsPageState extends State<DetailsPage>
+    with TickerProviderStateMixin {
+  TabController _controller;
+
+  @override
+  void initState() {
+    _controller = new TabController(length: 5, vsync: this);
+
+    //BlocProvider.of<DetailsCubit>(context).loadData(id: widget.id);
+    BlocProvider.of<PicturesCubit>(context).loadData(id: widget.id);
+
+    BlocProvider.of<OverViewCubit>(context).loadData(id: widget.id);
+    BlocProvider.of<EpisodesCubit>(context).loadData(id: widget.id);
+    BlocProvider.of<ReviewCubit>(context).loadData(id: widget.id);
+    BlocProvider.of<RecommendationCubit>(context).loadData(id: widget.id);
+    BlocProvider.of<CharacterCubit>(context).loadData(id: widget.id);
+    BlocProvider.of<NewsCubit>(context).loadData(id: widget.id);
+
+    // BlocProvider.of<OverViewCubit>(context).loadData(id: widget.id);
+
+    super.initState();
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
-      body: RequestSliverPage<PicturesCubit, AnimePictures>(
-        popupMenu: Menu.home,
-        title: title,
-        headerBuilder: (context, state, value) {
-          final photos = [for (final anime in value.pictures) anime.large];
+      body: DefaultTabController(
+        length: 6,
+        child: RequestSliverPage<PicturesCubit, AnimePictures>(
+          isTaped: true,
+          bottom: TabBar(
+            isScrollable: true,
+            tabs: [
+              Tab(text: 'Overview'),
+              Tab(text: 'Episodes'),
+              Tab(text: 'Reviews'),
+              Tab(text: 'Recommendations'),
+              Tab(text: 'Characters Staff'),
+              Tab(text: 'News'),
+            ],
+          ),
+          popupMenu: Menu.home,
+          title: widget.title,
+          headerBuilder: (context, state, value) {
+            final photos = [for (final anime in value.pictures) anime.large];
 
-          return SwiperHeader(list: photos);
-        },
-        childrenBuilder: (context, state, value) => [
-          AnimeDetailsCard(),
-        ],
+            return SwiperHeader(list: photos);
+          },
+          childrenBuilder: (context, state, value) => [],
+          tabbarBody: TabBarView(
+            // controller: _controller,
+            children: [
+              OverViewCard(),
+              EpisodeCard(),
+              ReviewsCard(),
+              Recommendations(),
+              CharacterStaff(),
+              NewsCard(),
+            ],
+          ),
+        ),
       ),
     );
   }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 }
 
-class AnimeDetailsCard extends StatelessWidget {
-  const AnimeDetailsCard({
+class EpisodeCard extends StatelessWidget {
+  const EpisodeCard({
     Key key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return RequestBuilder<DetailsCubit, Details>(
-      onLoaded: (context, state, value) => SliverSafeArea(
-        top: false,
-        sliver: SliverToBoxAdapter(
-          child: RowLayout.cards(children: <Widget>[
-            rocketCard(value, context),
-            videoCard(value, context),
-            epCard(value, context),
-          ]),
+    return RequestBuilder<EpisodesCubit, Episode>(
+      onLoaded: (context, state, value) => ListView.builder(
+        padding: EdgeInsets.zero,
+        shrinkWrap: true,
+        primary: true,
+        itemBuilder: (context, index) => EpisodeCell(
+          episode: value.episodes[index],
+        ),
+        itemCount: value.episodes.length,
+      ),
+    );
+  }
+}
+
+class ReviewsCard extends StatelessWidget {
+  const ReviewsCard({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return RequestBuilder<ReviewCubit, Review>(
+      onLoaded: (context, state, value) => ListView.builder(
+        padding: EdgeInsets.zero,
+        shrinkWrap: true,
+        primary: true,
+        itemBuilder: (context, index) => ReviewCell(
+          index: index + 1,
+          review: value.reviews[index],
+        ),
+        itemCount: value.reviews.length,
+      ),
+    );
+  }
+}
+
+class NewsCard extends StatelessWidget {
+  const NewsCard({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return RequestBuilder<NewsCubit, News>(
+      onLoaded: (context, state, value) => ListView.builder(
+        padding: EdgeInsets.zero,
+        shrinkWrap: true,
+        primary: true,
+        itemBuilder: (context, index) => NewsCell(
+          news: value.articles[index],
+        ),
+        itemCount: value.articles.length,
+      ),
+    );
+  }
+}
+
+class OverViewCard extends StatelessWidget {
+  const OverViewCard({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return RequestBuilder<OverViewCubit, Details>(
+      onLoaded: (context, state, value) => Container(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            RowLayout.cards(
+              children: <Widget>[
+                rocketCard(value, context),
+                value.hasVideo ? videoCard(value, context) : SizedBox(),
+                epCard(value, context),
+              ],
+            ),
+          ],
         ),
       ),
-      onInit: (context, state) => SliverToBoxAdapter(child: Text('Iniiit')),
-      onLoading: (context, state, value) => LoadingSliverView(),
-      onError: (context, state, errorMessage) => LoadingSliverView(),
+      onInit: (context, state) => Text('Iniiit'),
+      onLoading: (context, state, value) => LoadingView(),
+      onError: (context, state, errorMessage) => Text('Erooor'),
     );
   }
 
@@ -169,6 +307,123 @@ class AnimeDetailsCard extends StatelessWidget {
         Separator.divider(),
         ExpandText(details.synopsis ?? 'Null From Api')
       ]),
+    );
+  }
+}
+
+class EpisodeCell extends StatelessWidget {
+  final Episodes episode;
+  final int index;
+
+  const EpisodeCell({
+    Key key,
+    this.episode,
+    this.index,
+  }) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        DetailsCell(
+            leading: episode.episodeId.toString(),
+            title: episode.title,
+            subtitle: episode.filler ? 'Filler' : null,
+            // body: episode.titleJapanese,
+            onTap: () => context.openUrl(episode.forumUrl)),
+        Separator.divider(indent: 16),
+      ],
+    );
+  }
+}
+
+class ReviewCell extends StatelessWidget {
+  final Reviews review;
+  final int index;
+
+  const ReviewCell({
+    Key key,
+    this.review,
+    this.index,
+  }) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        DetailsCell(
+            leading: index.toString(),
+            title: review.reviewer.username,
+            subtitle: review.date,
+            body: review.content,
+            onTap: () => context.openUrl(review.reviewer.url)),
+        Separator.divider(indent: 16),
+      ],
+    );
+  }
+}
+
+class NewsCell extends StatelessWidget {
+  final Articles news;
+
+  const NewsCell({this.news, Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(children: <Widget>[
+      ListCell(
+        leading: ProfileImage.small(news.imageUrl),
+        title: news.title,
+        subtitle: news.date,
+        trailing: TrailingText(news.comments.toString()),
+        onTap: () => context.openUrl(news.url),
+      ),
+      Separator.divider(indent: 72)
+    ]);
+  }
+}
+
+class Recommendations extends StatelessWidget {
+  const Recommendations();
+
+  @override
+  Widget build(BuildContext context) {
+    return RequestBuilder<RecommendationCubit, Recommendation>(
+      onLoaded: (context, state, value) => GridView.builder(
+        padding: EdgeInsets.zero,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          childAspectRatio: 0.7,
+        ),
+        itemBuilder: (context, index) => AnimeCard(
+            cliced: true,
+            imageUrl: value.recommendations[index].imageUrl,
+            id: value.recommendations[index].malId,
+            title: value.recommendations[index].title),
+        itemCount: value.recommendations.length,
+      ),
+    );
+  }
+}
+
+class CharacterStaff extends StatelessWidget {
+  const CharacterStaff();
+
+  @override
+  Widget build(BuildContext context) {
+    return RequestBuilder<CharacterCubit, Character>(
+      onLoaded: (context, state, value) => GridView.builder(
+        padding: EdgeInsets.zero,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 4,
+          childAspectRatio: 0.7,
+        ),
+        itemBuilder: (context, index) => AnimeCard(
+          cliced: false,
+          imageUrl: value.characters[index].imageUrl,
+          id: value.characters[index].malId,
+          title: value.characters[index].name,
+        ),
+        itemCount: value.characters.length,
+      ),
     );
   }
 }

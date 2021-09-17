@@ -12,6 +12,7 @@ class DetailsService extends BaseService<Dio> {
 
   Future<Response> getDetails({@required int id, Request request}) async {
     print(Url.animeDetailsUrl(id: id, request: request));
+    //await Future.delayed(const Duration(milliseconds: 500));
     return client.get(Url.animeDetailsUrl(id: id, request: request));
   }
 }

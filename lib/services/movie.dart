@@ -6,6 +6,7 @@ class MoviesService extends BaseService<Dio> {
   const MoviesService(Dio client) : super(client);
 
   Future<Response> getMovies() async {
+   print('Movies');
     return client.get(Url.animeCategoryUrl(category: Category.movie));
   }
 }

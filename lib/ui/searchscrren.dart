@@ -4,14 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_request_bloc/widgets/request_builder.dart';
 import 'package:myanime/cubits/search.dart';
-import 'package:myanime/models/category.dart';
 import 'package:myanime/models/search.dart';
 import 'package:myanime/ui/widgets/loading_view.dart';
 import 'package:myanime/ui/widgets/vehicle_cell.dart';
 import '../utils/translate.dart';
 
 class SearchScreen extends StatefulWidget {
-  static final route = 'search';
+  static const route = 'search';
 
   @override
   _SearchScreenState createState() => _SearchScreenState();

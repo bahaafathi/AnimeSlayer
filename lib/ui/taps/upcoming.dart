@@ -22,6 +22,7 @@ class UpcomingTap extends StatelessWidget {
     return Scaffold(
       body: RequestSliverPage<UpcomingCubit, CategoryModel>(
         popupMenu: Menu.home,
+        isTaped: false,
         title: 'Upcoming Animes',
         headerBuilder: (context, state, value) =>
             SwiperHeader(list: List.from(SpaceXPhotos.company)..shuffle()),
@@ -33,11 +34,7 @@ class UpcomingTap extends StatelessWidget {
           tooltip: context.translate(
             'spacex.other.tooltip.search',
           ),
-          onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => SearchScreen(),
-              )),
+          onPressed: () => Navigator.pushNamed(context, SearchScreen.route),
           child: Icon(Icons.search),
         ),
       ),
@@ -60,6 +57,7 @@ class AnimeGridView extends StatelessWidget {
         delegate: SliverChildBuilderDelegate(
           (BuildContext context, int index) {
             return AnimeCard(
+              cliced: true,
               title: value.top[index].title,
               id: value.top[index].malId,
               imageUrl: value.top[index].imageUrl,

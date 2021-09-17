@@ -19,6 +19,7 @@ class OvaTap extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: RequestSliverPage<OvaCubit, CategoryModel>(
+        isTaped: false,
         popupMenu: Menu.home,
         title: 'Ova',
         headerBuilder: (context, state, value) =>
@@ -44,6 +45,7 @@ class AnimeGridView extends StatelessWidget {
         delegate: SliverChildBuilderDelegate(
           (BuildContext context, int index) {
             return new AnimeCard(
+              cliced: true,
               title: value.top[index].title,
               id: value.top[index].malId,
               imageUrl: value.top[index].imageUrl,

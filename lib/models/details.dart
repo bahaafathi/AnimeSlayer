@@ -55,7 +55,7 @@ class Details {
   Aired aired;
   String duration;
   String rating;
-  double score;
+  num score;
   int scoredBy;
   int rank;
   int popularity;
@@ -132,6 +132,7 @@ class Details {
     openingThemes = json['opening_themes'].cast<String>();
     endingThemes = json['ending_themes'].cast<String>();
   }
+  bool get hasVideo => trailerUrl != null;
 }
 
 class Aired {

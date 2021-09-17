@@ -6,6 +6,7 @@ class TopService extends BaseService<Dio> {
   const TopService(Dio client) : super(client);
 
   Future<Response> getTop() async {
+    print('Top');
     return client.get(Url.animeCategoryUrl(category: Category.airing));
   }
 }

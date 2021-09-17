@@ -15,6 +15,7 @@ class MoviesTap extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: RequestSliverPage<MoviesCubit, CategoryModel>(
+        isTaped: false,
         popupMenu: Menu.home,
         title: 'Movies',
         headerBuilder: (context, state, value) =>
@@ -42,6 +43,7 @@ class AnimeGridView extends StatelessWidget {
         delegate: SliverChildBuilderDelegate(
           (BuildContext context, int index) {
             return AnimeCard(
+              cliced: true,
               title: value.top[index].title,
               id: value.top[index].malId,
               imageUrl: value.top[index].imageUrl,

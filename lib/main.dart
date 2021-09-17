@@ -12,9 +12,15 @@ import 'package:myanime/cubits/top.dart';
 import 'package:myanime/cubits/upcoming.dart';
 import 'package:myanime/repositories/changelog.dart';
 import 'package:myanime/repositories/details.dart';
+import 'package:myanime/repositories/details/characterstuff.dart';
+import 'package:myanime/repositories/details/episodes.dart';
+import 'package:myanime/repositories/details/news.dart';
+import 'package:myanime/repositories/details/overview.dart';
+import 'package:myanime/repositories/details/recommendation.dart';
+import 'package:myanime/repositories/details/review.dart';
 import 'package:myanime/repositories/movies.dart';
 import 'package:myanime/repositories/ova.dart';
-import 'package:myanime/repositories/pictures.dart';
+import 'package:myanime/repositories/details/pictures.dart';
 import 'package:myanime/repositories/search.dart';
 import 'package:myanime/repositories/special.dart';
 import 'package:myanime/repositories/top.dart';
@@ -35,10 +41,16 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'cubits/browser.dart';
+import 'cubits/characterstuff.dart';
 import 'cubits/details.dart';
+import 'cubits/episodes.dart';
 import 'cubits/image_quality.dart';
 import 'cubits/movies.dart';
+import 'cubits/news.dart';
+import 'cubits/overview.dart';
 import 'cubits/pictures.dart';
+import 'cubits/recommendation.dart';
+import 'cubits/review.dart';
 import 'cubits/search.dart';
 import 'cubits/theme.dart';
 
@@ -62,20 +74,29 @@ void main() async {
       changelogRepository: ChangelogRepository(ChangelogService(httpClient)),
       searchRepository: SearchRepository(SearchService(httpClient)),
       picturesRepository: PicturesRepository(DetailsService(httpClient)),
+      charactersStaffRepository:
+          CharactersStaffRepository(DetailsService(httpClient)),
+      episodesRepository: EpisodesRepository(DetailsService(httpClient)),
+      newsRepository: NewsRepository(DetailsService(httpClient)),
+      overViewRepository: OverViewRepository(DetailsService(httpClient)),
+      recomendationsRepository:
+          RecomendationsRepository(DetailsService(httpClient)),
+      reviewsRepository: ReviewsRepository(DetailsService(httpClient)),
     ),
   );
 
   Bloc.observer = MyBlocObserver();
 
   // print('_________________________________________');
-  // var data = await DetailsRepository(DetailsService(Dio())).fetchData(id: 1);
-  // print(data.title);
+  // final data =
+  //     await DetailsRepository(DetailsService(httpClient)).fetchData(id: 1);
+  // print(data[1].characters[0].name);
   // print('_________________________________________');
   // var data = await SearchRepository(SearchService(httpClient)).fetchData();
   // print(data.results[0].title);
-  var data =
-      await PicturesRepository(DetailsService(httpClient)).fetchData(id: 1);
-  print(data.pictures[0].large);
+  // var data =
+  //     await PicturesRepository(DetailsService(httpClient)).fetchData(id: 1);
+  // print(data.pictures[0].large);
 }
 
 class MyApp extends StatelessWidget {
@@ -88,6 +109,12 @@ class MyApp extends StatelessWidget {
   final DetailsRepository detailsRepository;
   final SearchRepository searchRepository;
   final PicturesRepository picturesRepository;
+  final CharactersStaffRepository charactersStaffRepository;
+  final EpisodesRepository episodesRepository;
+  final NewsRepository newsRepository;
+  final OverViewRepository overViewRepository;
+  final RecomendationsRepository recomendationsRepository;
+  final ReviewsRepository reviewsRepository;
   const MyApp({
     Key key,
     this.moviesRepository,
@@ -99,6 +126,12 @@ class MyApp extends StatelessWidget {
     this.detailsRepository,
     this.searchRepository,
     this.picturesRepository,
+    this.charactersStaffRepository,
+    this.episodesRepository,
+    this.newsRepository,
+    this.overViewRepository,
+    this.recomendationsRepository,
+    this.reviewsRepository,
   }) : super(key: key);
 
   @override
@@ -117,6 +150,14 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (_) => UpcomingCubit(upcomingRepository)),
           BlocProvider(create: (_) => OvaCubit(ovaRepository)),
           BlocProvider(create: (_) => PicturesCubit(picturesRepository)),
+          BlocProvider(
+              create: (_) => CharacterCubit(charactersStaffRepository)),
+          BlocProvider(create: (_) => EpisodesCubit(episodesRepository)),
+          BlocProvider(create: (_) => NewsCubit(newsRepository)),
+          BlocProvider(
+              create: (_) => RecommendationCubit(recomendationsRepository)),
+          BlocProvider(create: (_) => ReviewCubit(reviewsRepository)),
+          BlocProvider(create: (_) => OverViewCubit(overViewRepository)),
         ],
         child: BlocConsumer<ThemeCubit, ThemeState>(
           listener: null,

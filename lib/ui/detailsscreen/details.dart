@@ -1,3 +1,4 @@
+import 'package:big_tip/big_tip.dart';
 import 'package:cherry_components/cherry_components.dart';
 import 'package:expand_widget/expand_widget.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +30,7 @@ import 'package:row_collection/row_collection.dart';
 import 'package:row_item/row_item.dart';
 
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import '../../utils/translate.dart';
 
 class DetailsPage extends StatefulWidget {
   final int id;
@@ -92,12 +94,14 @@ class _DetailsPageState extends State<DetailsPage>
           tabbarBody: TabBarView(
             // controller: _controller,
             children: [
-              OverViewCard(),
-              EpisodeCard(),
-              ReviewsCard(),
-              Recommendations(),
-              CharacterStaff(),
-              NewsCard(),
+              OverViewCard(id: widget.id),
+              EpisodeCard(id: widget.id),
+              ReviewsCard(id: widget.id),
+              Recommendations(widget.id),
+              CharacterStaff(widget.id),
+              NewsCard(
+                id: widget.id,
+              ),
             ],
           ),
         ),
@@ -113,8 +117,10 @@ class _DetailsPageState extends State<DetailsPage>
 }
 
 class EpisodeCard extends StatelessWidget {
+  final int id;
   const EpisodeCard({
     Key key,
+    this.id,
   }) : super(key: key);
 
   @override
@@ -129,13 +135,31 @@ class EpisodeCard extends StatelessWidget {
         ),
         itemCount: value.episodes.length,
       ),
+      onLoading: (context, state, value) => LoadingView(),
+      onError: (context, state, errorMessage) => BigTip(
+        subtitle: Text(
+          context.translate('spacex.other.loading_error.message'),
+          style: Theme.of(context).textTheme.subtitle1,
+        ),
+        action: Text(
+          context.translate('spacex.other.loading_error.reload'),
+          style: Theme.of(context).textTheme.subtitle1.copyWith(
+                color: Theme.of(context).accentColor,
+                fontWeight: FontWeight.bold,
+              ),
+        ),
+        actionCallback: () => context.read<EpisodesCubit>().loadData(id: id),
+        child: Icon(Icons.cloud_off),
+      ),
     );
   }
 }
 
 class ReviewsCard extends StatelessWidget {
+  final int id;
   const ReviewsCard({
     Key key,
+    this.id,
   }) : super(key: key);
 
   @override
@@ -151,13 +175,30 @@ class ReviewsCard extends StatelessWidget {
         ),
         itemCount: value.reviews.length,
       ),
+      onError: (context, state, errorMessage) => BigTip(
+        subtitle: Text(
+          context.translate('spacex.other.loading_error.message'),
+          style: Theme.of(context).textTheme.subtitle1,
+        ),
+        action: Text(
+          context.translate('spacex.other.loading_error.reload'),
+          style: Theme.of(context).textTheme.subtitle1.copyWith(
+                color: Theme.of(context).accentColor,
+                fontWeight: FontWeight.bold,
+              ),
+        ),
+        actionCallback: () => context.read<ReviewCubit>().loadData(id: id),
+        child: Icon(Icons.cloud_off),
+      ),
     );
   }
 }
 
 class NewsCard extends StatelessWidget {
+  final int id;
   const NewsCard({
     Key key,
+    this.id,
   }) : super(key: key);
 
   @override
@@ -172,13 +213,31 @@ class NewsCard extends StatelessWidget {
         ),
         itemCount: value.articles.length,
       ),
+      onError: (context, state, errorMessage) => BigTip(
+        subtitle: Text(
+          context.translate('spacex.other.loading_error.message'),
+          style: Theme.of(context).textTheme.subtitle1,
+        ),
+        action: Text(
+          context.translate('spacex.other.loading_error.reload'),
+          style: Theme.of(context).textTheme.subtitle1.copyWith(
+                color: Theme.of(context).accentColor,
+                fontWeight: FontWeight.bold,
+              ),
+        ),
+        actionCallback: () => context.read<NewsCubit>().loadData(id: id),
+        child: Icon(Icons.cloud_off),
+      ),
+      onLoading: (context, state, value) => LoadingView(),
     );
   }
 }
 
 class OverViewCard extends StatelessWidget {
+  final int id;
   const OverViewCard({
     Key key,
+    this.id,
   }) : super(key: key);
 
   @override
@@ -200,7 +259,21 @@ class OverViewCard extends StatelessWidget {
       ),
       onInit: (context, state) => Text('Iniiit'),
       onLoading: (context, state, value) => LoadingView(),
-      onError: (context, state, errorMessage) => Text('Erooor'),
+      onError: (context, state, errorMessage) => BigTip(
+        subtitle: Text(
+          context.translate('spacex.other.loading_error.message'),
+          style: Theme.of(context).textTheme.subtitle1,
+        ),
+        action: Text(
+          context.translate('spacex.other.loading_error.reload'),
+          style: Theme.of(context).textTheme.subtitle1.copyWith(
+                color: Theme.of(context).accentColor,
+                fontWeight: FontWeight.bold,
+              ),
+        ),
+        actionCallback: () => context.read<OverViewCubit>().loadData(id: id),
+        child: Icon(Icons.cloud_off),
+      ),
     );
   }
 
@@ -382,11 +455,13 @@ class NewsCell extends StatelessWidget {
 }
 
 class Recommendations extends StatelessWidget {
-  const Recommendations();
+  final int id;
+  const Recommendations(this.id);
 
   @override
   Widget build(BuildContext context) {
     return RequestBuilder<RecommendationCubit, Recommendation>(
+      onLoading: (context, state, value) => LoadingView(),
       onLoaded: (context, state, value) => GridView.builder(
         padding: EdgeInsets.zero,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -400,16 +475,34 @@ class Recommendations extends StatelessWidget {
             title: value.recommendations[index].title),
         itemCount: value.recommendations.length,
       ),
+      onError: (context, state, errorMessage) => BigTip(
+        subtitle: Text(
+          context.translate('spacex.other.loading_error.message'),
+          style: Theme.of(context).textTheme.subtitle1,
+        ),
+        action: Text(
+          context.translate('spacex.other.loading_error.reload'),
+          style: Theme.of(context).textTheme.subtitle1.copyWith(
+                color: Theme.of(context).accentColor,
+                fontWeight: FontWeight.bold,
+              ),
+        ),
+        actionCallback: () =>
+            context.read<RecommendationCubit>().loadData(id: id),
+        child: Icon(Icons.cloud_off),
+      ),
     );
   }
 }
 
 class CharacterStaff extends StatelessWidget {
-  const CharacterStaff();
+  final int id;
+  const CharacterStaff(this.id);
 
   @override
   Widget build(BuildContext context) {
     return RequestBuilder<CharacterCubit, Character>(
+      onLoading: (context, state, value) => LoadingView(),
       onLoaded: (context, state, value) => GridView.builder(
         padding: EdgeInsets.zero,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -423,6 +516,21 @@ class CharacterStaff extends StatelessWidget {
           title: value.characters[index].name,
         ),
         itemCount: value.characters.length,
+      ),
+      onError: (context, state, errorMessage) => BigTip(
+        subtitle: Text(
+          context.translate('spacex.other.loading_error.message'),
+          style: Theme.of(context).textTheme.subtitle1,
+        ),
+        action: Text(
+          context.translate('spacex.other.loading_error.reload'),
+          style: Theme.of(context).textTheme.subtitle1.copyWith(
+                color: Theme.of(context).accentColor,
+                fontWeight: FontWeight.bold,
+              ),
+        ),
+        actionCallback: () => context.read<CharacterCubit>().loadData(id: id),
+        child: Icon(Icons.cloud_off),
       ),
     );
   }

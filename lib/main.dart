@@ -6,6 +6,7 @@ import 'package:flutter_i18n/flutter_i18n_delegate.dart';
 import 'package:flutter_i18n/loaders/file_translation_loader.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:myanime/cubits/changelog.dart';
+import 'package:myanime/cubits/manga.dart';
 import 'package:myanime/cubits/ova.dart';
 import 'package:myanime/cubits/special.dart';
 import 'package:myanime/cubits/top.dart';
@@ -18,6 +19,7 @@ import 'package:myanime/repositories/details/news.dart';
 import 'package:myanime/repositories/details/overview.dart';
 import 'package:myanime/repositories/details/recommendation.dart';
 import 'package:myanime/repositories/details/review.dart';
+import 'package:myanime/repositories/managa.dart';
 import 'package:myanime/repositories/movies.dart';
 import 'package:myanime/repositories/ova.dart';
 import 'package:myanime/repositories/details/pictures.dart';
@@ -27,6 +29,7 @@ import 'package:myanime/repositories/top.dart';
 import 'package:myanime/repositories/upcoming.dart';
 import 'package:myanime/services/changelog.dart';
 import 'package:myanime/services/details.dart';
+import 'package:myanime/services/manga.dart';
 import 'package:myanime/services/movie.dart';
 import 'package:myanime/services/ova.dart';
 import 'package:myanime/services/search.dart';
@@ -62,9 +65,12 @@ void main() async {
         ? HydratedStorage.webStorageDirectory
         : await getTemporaryDirectory(),
   );
+  var data = await MangaRepository(MangaService(Dio())).fetchData();
+  print(data.top[0].title);
 
   runApp(
     MyApp(
+      mangaRepository: MangaRepository(MangaService(httpClient)),
       moviesRepository: MoviesRepository(MoviesService(httpClient)),
       ovaRepository: OvaRepository(OvaService(httpClient)),
       specialRepository: SpecialRepository(SpecialService(httpClient)),
@@ -100,6 +106,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+  final MangaRepository mangaRepository;
   final MoviesRepository moviesRepository;
   final TopRepository topRepository;
   final SpecialRepository specialRepository;
@@ -115,29 +122,31 @@ class MyApp extends StatelessWidget {
   final OverViewRepository overViewRepository;
   final RecomendationsRepository recomendationsRepository;
   final ReviewsRepository reviewsRepository;
-  const MyApp({
-    Key key,
-    this.moviesRepository,
-    this.topRepository,
-    this.specialRepository,
-    this.upcomingRepository,
-    this.changelogRepository,
-    this.ovaRepository,
-    this.detailsRepository,
-    this.searchRepository,
-    this.picturesRepository,
-    this.charactersStaffRepository,
-    this.episodesRepository,
-    this.newsRepository,
-    this.overViewRepository,
-    this.recomendationsRepository,
-    this.reviewsRepository,
-  }) : super(key: key);
+  const MyApp(
+      {Key key,
+      this.moviesRepository,
+      this.topRepository,
+      this.specialRepository,
+      this.upcomingRepository,
+      this.changelogRepository,
+      this.ovaRepository,
+      this.detailsRepository,
+      this.searchRepository,
+      this.picturesRepository,
+      this.charactersStaffRepository,
+      this.episodesRepository,
+      this.newsRepository,
+      this.overViewRepository,
+      this.recomendationsRepository,
+      this.reviewsRepository,
+      this.mangaRepository})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [
+          BlocProvider(create: (_) => Mangacubit(mangaRepository)),
           BlocProvider(create: (_) => DetailsCubit(detailsRepository)),
           BlocProvider(create: (_) => ChangelogCubit(changelogRepository)),
           BlocProvider(create: (_) => ImageQualityCubit()),

@@ -25,7 +25,7 @@ class _StartScreenState extends State<StartScreen> {
         index: _currentIndex,
         children: [
           TopTap(),
-          MoviesTap(),
+          MangaTap(),
           UpcomingTap(),
           SearchScreen(),
           OvaTap(),

@@ -239,18 +239,20 @@ class RequestSliverPage<C extends RequestCubit, T> extends StatelessWidget {
           bottom: bottom,
           tabbarBody: tabbarBody,
         ),
-        onError: (context, state, error) => SliverPage(
-          isTaped: isTaped,
-          // bottom: bottom,
-          tabbarBody: tabbarBody,
-          controller: controller,
-          title: title,
-          header: Separator.none(),
-          actions: actions,
-          popupMenu: popupMenu,
-          // ignore: prefer_const_literals_to_create_immutables
-          children: [ErrorSliverView<C>()],
-        ),
+        onError: (context, state, error) => isTaped
+            ? null
+            : SliverPage(
+                isTaped: isTaped,
+                // bottom: bottom,
+                tabbarBody: tabbarBody,
+                controller: controller,
+                title: title,
+                header: Separator.none(),
+                actions: actions,
+                popupMenu: popupMenu,
+                // ignore: prefer_const_literals_to_create_immutables
+                children: [ErrorSliverView<C>()],
+              ),
       ),
     );
   }

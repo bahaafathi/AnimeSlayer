@@ -240,7 +240,7 @@ class RequestSliverPage<C extends RequestCubit, T> extends StatelessWidget {
           tabbarBody: tabbarBody,
         ),
         onError: (context, state, error) => isTaped
-            ? null
+            ? AppBar()
             : SliverPage(
                 isTaped: isTaped,
                 // bottom: bottom,

@@ -12,6 +12,7 @@ import '../../utils/browser.dart';
 /// Constant list of all translators
 const List<Map<String, String>> _translators = [
   {'language': 'English'},
+  {'language': 'Arabic'},
   {'language': 'Español'},
   {'language': 'Portugues'},
   {'language': '简体中文'},

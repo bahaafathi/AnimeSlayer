@@ -26,7 +26,7 @@ class Routes {
         case SearchScreen.route:
           return MaterialPageRoute(
             settings: routeSettings,
-            builder: (_) => SearchScreen(),
+            builder: (_) => SearchScreen(true),
           );
 
         case AboutScreen.route:

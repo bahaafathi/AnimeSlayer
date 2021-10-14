@@ -8,7 +8,7 @@ class Url {
   // A single anime object with all its details
   //Endpoint Path: /anime/{id}(/request)
   static String animeDetailsUrl(
-      {@required int id, Request request, String type = 'anime'}) {
+      {@required int id, Request request, String type='anime'}) {
     //return '$jikanBaseUrl/anime/$id/${request != null ? animeDetailsMap[request] : null}';
     return request != null
         ? '$jikanBaseUrl/$type/$id/${animeDetailsMap[request]}'
@@ -18,8 +18,7 @@ class Url {
   static String animeCategoryUrl({@required Category category}) {
     return '$jikanBaseUrl/top/anime/1/${animeCategoryMap[category]}';
   }
-
-  static String mangaCategoryUrl() {
+   static String mangaCategoryUrl() {
     return '$jikanBaseUrl/top/manga';
   }
 
@@ -28,8 +27,7 @@ class Url {
   }
 
   // About page
-  static const authorProfile =
-      'https://www.linkedin.com/in/bahaa-fathi-364724200/';
+  static const authorProfile = 'https://twitter.com/bahaafathi';
   static const authorPatreon = 'https://www.patreon.com/bahaafathi';
   static const emailUrl =
       'mailto:BahaaFathi@outlook.sa?subject=About Anime Slayer!';

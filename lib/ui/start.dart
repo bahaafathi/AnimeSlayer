@@ -17,6 +17,7 @@ class StartScreen extends StatefulWidget {
 
 class _StartScreenState extends State<StartScreen> {
   int _currentIndex = 0;
+  bool autofocus = false;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,7 @@ class _StartScreenState extends State<StartScreen> {
           TopTap(),
           MangaTap(),
           UpcomingTap(),
-          SearchScreen(),
+          SearchScreen(autofocus),
           OvaTap(),
         ],
       ),

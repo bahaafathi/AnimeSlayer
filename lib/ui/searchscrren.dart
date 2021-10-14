@@ -11,6 +11,10 @@ import '../utils/translate.dart';
 
 class SearchScreen extends StatefulWidget {
   static const route = 'search';
+  bool auto;
+  SearchScreen(aa) {
+    auto = aa;
+  }
 
   @override
   _SearchScreenState createState() => _SearchScreenState();
@@ -24,12 +28,24 @@ class _SearchScreenState extends State<SearchScreen> {
     return Scaffold(
       appBar: AppBar(
         title: TextField(
+          autofocus: widget.auto,
+          enabled: true,
           decoration:
               InputDecoration(border: InputBorder.none, hintText: 'Search'),
           controller: controller,
           onChanged: (value) => value.length >= 3
               ? context.read<SearchCubit>().loadData(query: value)
               : null,
+        ),
+        leading: IconButton(
+          onPressed: () {
+            _clearSearch();
+            if (widget.auto == true) {
+              Navigator.pop(context);
+            }
+            widget.auto = false;
+          },
+          icon: Icon(Icons.clear, color: Colors.white),
         ),
       ),
       body: RequestBuilder<SearchCubit, Search>(
@@ -84,5 +100,11 @@ class _SearchScreenState extends State<SearchScreen> {
   void dispose() {
     controller.dispose();
     super.dispose();
+  }
+
+  void _clearSearch() {
+    setState(() {
+      controller.clear();
+    });
   }
 }

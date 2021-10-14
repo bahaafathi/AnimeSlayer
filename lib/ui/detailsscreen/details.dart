@@ -286,7 +286,7 @@ class OverViewCard extends StatelessWidget {
           flags: YoutubePlayerFlags(
             autoPlay: false,
             mute: false,
-            hideControls: false,
+            hideControls: true,
           ),
         ),
         liveUIColor: Colors.amber,

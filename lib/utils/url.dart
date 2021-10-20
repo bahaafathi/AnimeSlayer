@@ -15,17 +15,12 @@ class Url {
         : '$jikanBaseUrl/$type/$id';
   }
 
-  static String animeCategoryUrl({@required Category category, int num = 1}) {
-    return '$jikanBaseUrl/top/anime/$num/${animeCategoryMap[category]}';
+  static String animeCategoryUrl({@required Category category, int page = 1}) {
+    return '$jikanBaseUrl/top/anime/$page/${animeCategoryMap[category]}';
   }
 
-  static String animeCategoryUrl2(
-      {@required Category category, @required int num}) {
-    return '$jikanBaseUrl/top/anime/$num/${animeCategoryMap[category]}';
-  }
-
-  static String mangaCategoryUrl({@required int num}) {
-    return '$jikanBaseUrl/top/manga/$num';
+  static String mangaCategoryUrl({@required int page}) {
+    return '$jikanBaseUrl/top/manga/$page';
   }
 
   static String search({@required String query}) {

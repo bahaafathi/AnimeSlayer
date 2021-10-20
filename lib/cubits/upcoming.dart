@@ -8,13 +8,13 @@ class UpcomingCubit extends RequestCubit<UpcomingRepository, CategoryModel> {
   UpcomingCubit(UpcomingRepository repository) : super(repository);
 
   @override
-  Future<List> loadData({int num= 1}) async {
-    if (num == 1) {
+  Future<List> loadData({int page = 1}) async {
+    if (page == 1) {
       emit(RequestState.loading(state.value));
     }
 
     try {
-      final data = await repository.fetchData(num: num);
+      final data = await repository.fetchData(page: page);
       emit(RequestState.loading(state.value));
 
       emit(RequestState.loaded(data));

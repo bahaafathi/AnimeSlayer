@@ -18,18 +18,17 @@ class MangaTap extends StatefulWidget {
 }
 
 class _MangaTapState extends State<MangaTap> {
-  int num = 1;
+  int page = 1;
   ScrollController controller = ScrollController();
-  double maxScrollExtent;
   @override
   void initState() {
     controller.addListener(() async {
-      if (controller.position.pixels == controller.position.maxScrollExtent) {
-        maxScrollExtent = controller.position.maxScrollExtent;
-        num++;
-        List<dynamic> addlist = await BlocProvider.of<Mangacubit>(context)
-            .loadData(numTopCubit: num);
-        totalvalue.addAll(addlist);
+      if (controller.position.pixels == controller.position.maxScrollExtent &&
+          page < 7) {
+        page++;
+        List<dynamic> addlist =
+            await BlocProvider.of<Mangacubit>(context).loadData(page: page);
+        items.addAll(addlist);
       }
     });
     super.initState();
@@ -51,7 +50,7 @@ class _MangaTapState extends State<MangaTap> {
   }
 }
 
-List totalvalue = [];
+List items = [];
 
 class AnimeGridView extends StatelessWidget {
   const AnimeGridView({
@@ -69,7 +68,7 @@ class AnimeGridView extends StatelessWidget {
   }
 }
 
-class AnimeGridViewLoaded extends StatelessWidget {
+class AnimeGridViewLoaded extends StatefulWidget {
   final value;
 
   const AnimeGridViewLoaded({
@@ -78,9 +77,19 @@ class AnimeGridViewLoaded extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    totalvalue.addAll(value.top);
+  _AnimeGridViewLoadedState createState() => _AnimeGridViewLoadedState();
+}
 
+class _AnimeGridViewLoadedState extends State<AnimeGridViewLoaded> {
+  @override
+  void initState() {
+    items.addAll(widget.value.top);
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return SliverGrid(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
@@ -90,12 +99,12 @@ class AnimeGridViewLoaded extends StatelessWidget {
         (BuildContext context, int index) {
           return AnimeCard(
             cliced: true,
-            title: totalvalue[index].title,
-            id: totalvalue[index].malId,
-            imageUrl: totalvalue[index].imageUrl,
+            title: items[index].title,
+            id: items[index].malId,
+            imageUrl: items[index].imageUrl,
           );
         },
-        childCount: totalvalue.length,
+        childCount: items.length,
       ),
     );
   }

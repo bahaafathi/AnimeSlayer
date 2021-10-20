@@ -165,7 +165,6 @@ class SliverPage extends StatelessWidget {
                 ],
               ),
               ...children,
-              // Container(child: LoadingSliverView()),
             ],
             key: PageStorageKey(title),
             controller: controller,
@@ -244,14 +243,12 @@ class RequestSliverPage<C extends RequestCubit, T> extends StatelessWidget {
             ? null
             : SliverPage(
                 isTaped: isTaped,
-                // bottom: bottom,
                 tabbarBody: tabbarBody,
                 controller: controller,
                 title: title,
                 header: Separator.none(),
                 actions: actions,
                 popupMenu: popupMenu,
-                // ignore: prefer_const_literals_to_create_immutables
                 children: [ErrorSliverView<C>()],
               ),
       ),

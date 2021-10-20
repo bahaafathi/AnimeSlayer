@@ -13,9 +13,9 @@ class SearchScreen extends StatefulWidget {
   static const route = 'search';
   bool auto;
   bool navigator;
-  SearchScreen(aa, navig) {
-    navigator = navig;
-    auto = aa;
+  SearchScreen({autofocus, Navigator}) {
+    navigator = Navigator;
+    auto = autofocus;
   }
 
   @override

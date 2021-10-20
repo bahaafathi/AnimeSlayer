@@ -80,7 +80,7 @@ class _StartScreenState extends State<StartScreen> {
           TopTap(),
           MangaTap(),
           UpcomingTap(),
-          SearchScreen(autofocus, false),
+          SearchScreen(autofocus: autofocus, Navigator: false),
           OvaTap(),
         ],
       ),

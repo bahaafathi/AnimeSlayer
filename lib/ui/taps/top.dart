@@ -23,18 +23,17 @@ class TopTap extends StatefulWidget {
 }
 
 class _TopTapState extends State<TopTap> {
-  int num = 1;
+  int page = 1;
   ScrollController controller = ScrollController();
-  double maxScrollExtent;
   @override
   void initState() {
     controller.addListener(() async {
-      if (controller.position.pixels == controller.position.maxScrollExtent) {
-        maxScrollExtent = controller.position.maxScrollExtent;
-        num++;
+      if (controller.position.pixels == controller.position.maxScrollExtent &&
+          page < 7) {
+        page++;
         List<dynamic> addlist =
-            await BlocProvider.of<TopCubit>(context).loadData(numTopCubit: num);
-        totalvalue.addAll(addlist);
+            await BlocProvider.of<TopCubit>(context).loadData(page: page);
+        items.addAll(addlist);
       }
     });
     super.initState();
@@ -70,18 +69,30 @@ class _TopTapState extends State<TopTap> {
   }
 }
 
-List totalvalue = [];
+List items = [];
 
-class AnimeGridView extends StatelessWidget {
+class AnimeGridView extends StatefulWidget {
   final value;
 
   const AnimeGridView({
     Key key,
     @required this.value,
   }) : super(key: key);
+
+  @override
+  _AnimeGridViewState createState() => _AnimeGridViewState();
+}
+
+class _AnimeGridViewState extends State<AnimeGridView> {
+  @override
+  void initState() {
+    items.addAll(widget.value.top);
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    totalvalue.addAll(value.top);
     return SliverGrid(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3, childAspectRatio: 0.7),
@@ -89,12 +100,12 @@ class AnimeGridView extends StatelessWidget {
         (BuildContext context, int index) {
           return AnimeCard(
             cliced: true,
-            id: totalvalue[index].malId,
-            imageUrl: totalvalue[index].imageUrl,
-            title: totalvalue[index].title,
+            id: items[index].malId,
+            imageUrl: items[index].imageUrl,
+            title: items[index].title,
           );
         },
-        childCount: totalvalue.length,
+        childCount: items.length,
       ),
     );
   }

@@ -7,9 +7,9 @@ class TopService extends BaseService<Dio> {
     Dio client,
   ) : super(client);
 
-  Future<Response> getTop(int numService) async {
+  Future<Response> getTop(int page) async {
     print('Top');
     return client
-        .get(Url.animeCategoryUrl2(category: Category.airing, num: numService));
+        .get(Url.animeCategoryUrl(category: Category.airing, page: page));
   }
 }

@@ -22,21 +22,20 @@ class UpcomingTap extends StatefulWidget {
   _UpcomingTapState createState() => _UpcomingTapState();
 }
 
-List totalvalue = [];
+List items = [];
 
 class _UpcomingTapState extends State<UpcomingTap> {
-  int num = 1;
+  int page = 1;
   ScrollController controller = ScrollController();
-  double maxScrollExtent;
   @override
   void initState() {
     controller.addListener(() async {
-      if (controller.position.pixels == controller.position.maxScrollExtent) {
-        maxScrollExtent = controller.position.maxScrollExtent;
-        num++;
+      if (controller.position.pixels == controller.position.maxScrollExtent &&
+          page < 7) {
+        page++;
         List<dynamic> addlist =
-            await BlocProvider.of<UpcomingCubit>(context).loadData(num: num);
-        totalvalue.addAll(addlist);
+            await BlocProvider.of<UpcomingCubit>(context).loadData(page: page);
+        items.addAll(addlist);
       }
     });
     super.initState();
@@ -72,7 +71,7 @@ class _UpcomingTapState extends State<UpcomingTap> {
   }
 }
 
-class AnimeGridView extends StatelessWidget {
+class AnimeGridView extends StatefulWidget {
   final value;
 
   const AnimeGridView({
@@ -81,9 +80,19 @@ class AnimeGridView extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    totalvalue.addAll(value.top);
+  _AnimeGridViewState createState() => _AnimeGridViewState();
+}
 
+class _AnimeGridViewState extends State<AnimeGridView> {
+  @override
+  void initState() {
+    items.addAll(widget.value.top);
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return RequestBuilder<UpcomingCubit, CategoryModel>(
       onLoading: (context, state, value) => LoadingSliverView(),
       onLoaded: (context, state, value) => SliverGrid(
@@ -93,12 +102,12 @@ class AnimeGridView extends StatelessWidget {
           (BuildContext context, int index) {
             return AnimeCard(
               cliced: true,
-              title: totalvalue[index].title,
-              id: totalvalue[index].malId,
-              imageUrl: totalvalue[index].imageUrl,
+              title: items[index].title,
+              id: items[index].malId,
+              imageUrl: items[index].imageUrl,
             );
           },
-          childCount: totalvalue.length,
+          childCount: items.length,
         ),
       ),
     );

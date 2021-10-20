@@ -8,13 +8,13 @@ class TopCubit extends RequestCubit<TopRepository, CategoryModel> {
   TopCubit(TopRepository repository) : super(repository);
 
   @override
-  Future<List> loadData({int numTopCubit = 1}) async {
-    if (numTopCubit == 1) {
+  Future<List> loadData({int page = 1}) async {
+    if (page == 1) {
       emit(RequestState.loading(state.value));
     }
 
     try {
-      final data = await repository.fetchData(num: numTopCubit);
+      final data = await repository.fetchData(page: page);
       emit(RequestState.loading(state.value));
 
       emit(RequestState.loaded(data));
@@ -25,9 +25,9 @@ class TopCubit extends RequestCubit<TopRepository, CategoryModel> {
     }
   }
 
-  Future<List> loadData2({int numTopCubit = 1}) async {
+  Future<List> loadData2({int page = 1}) async {
     try {
-      final data = await repository.fetchData(num: numTopCubit);
+      final data = await repository.fetchData(page: page);
       emit(RequestState.loaded(data));
 
       return data.top;

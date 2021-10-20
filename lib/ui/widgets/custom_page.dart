@@ -165,6 +165,7 @@ class SliverPage extends StatelessWidget {
                 ],
               ),
               ...children,
+              // Container(child: LoadingSliverView()),
             ],
             key: PageStorageKey(title),
             controller: controller,

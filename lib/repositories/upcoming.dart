@@ -9,8 +9,8 @@ class UpcomingRepository
   const UpcomingRepository(UpcomingService service) : super(service);
 
   @override
-  Future<CategoryModel> fetchData() async {
-    final response = await service.getUpcoming();
+  Future<CategoryModel> fetchData({int num}) async {
+    final response = await service.getUpcoming(num);
 
     return CategoryModel.fromJson(response.data);
   }

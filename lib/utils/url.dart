@@ -8,18 +8,24 @@ class Url {
   // A single anime object with all its details
   //Endpoint Path: /anime/{id}(/request)
   static String animeDetailsUrl(
-      {@required int id, Request request, String type='anime'}) {
+      {@required int id, Request request, String type = 'anime'}) {
     //return '$jikanBaseUrl/anime/$id/${request != null ? animeDetailsMap[request] : null}';
     return request != null
         ? '$jikanBaseUrl/$type/$id/${animeDetailsMap[request]}'
         : '$jikanBaseUrl/$type/$id';
   }
 
-  static String animeCategoryUrl({@required Category category}) {
-    return '$jikanBaseUrl/top/anime/1/${animeCategoryMap[category]}';
+  static String animeCategoryUrl({@required Category category, int num = 1}) {
+    return '$jikanBaseUrl/top/anime/$num/${animeCategoryMap[category]}';
   }
-   static String mangaCategoryUrl() {
-    return '$jikanBaseUrl/top/manga';
+
+  static String animeCategoryUrl2(
+      {@required Category category, @required int num}) {
+    return '$jikanBaseUrl/top/anime/$num/${animeCategoryMap[category]}';
+  }
+
+  static String mangaCategoryUrl({@required int num}) {
+    return '$jikanBaseUrl/top/manga/$num';
   }
 
   static String search({@required String query}) {

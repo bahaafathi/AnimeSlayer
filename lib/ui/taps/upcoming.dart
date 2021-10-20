@@ -1,6 +1,7 @@
 import 'package:big_tip/big_tip.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_request_bloc/widgets/request_builder.dart';
 import 'package:myanime/cubits/top.dart';
 import 'package:myanime/cubits/upcoming.dart';
@@ -16,17 +17,49 @@ import '../../utils/translate.dart';
 import '../searchscrren.dart';
 import '../widgets/loading_view.dart';
 
-class UpcomingTap extends StatelessWidget {
+class UpcomingTap extends StatefulWidget {
+  @override
+  _UpcomingTapState createState() => _UpcomingTapState();
+}
+
+List totalvalue = [];
+
+class _UpcomingTapState extends State<UpcomingTap> {
+  int num = 1;
+  ScrollController controller = ScrollController();
+  double maxScrollExtent;
+  @override
+  void initState() {
+    controller.addListener(() async {
+      if (controller.position.pixels == controller.position.maxScrollExtent) {
+        maxScrollExtent = controller.position.maxScrollExtent;
+        num++;
+        List<dynamic> addlist =
+            await BlocProvider.of<UpcomingCubit>(context).loadData(num: num);
+        totalvalue.addAll(addlist);
+
+        print(
+            "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc");
+      }
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: RequestSliverPage<UpcomingCubit, CategoryModel>(
+        controller: controller,
         popupMenu: Menu.home,
         isTaped: false,
         title: 'Upcoming Animes',
         headerBuilder: (context, state, value) =>
             SwiperHeader(list: List.from(SpaceXPhotos.company)..shuffle()),
-        childrenBuilder: (context, state, value) => [AnimeGridView()],
+        childrenBuilder: (context, state, value) => [
+          AnimeGridView(
+            value: value,
+          )
+        ],
       ),
       floatingActionButton: RequestBuilder<TopCubit, CategoryModel>(
         onLoaded: (context, state, value) => FloatingActionButton(
@@ -43,12 +76,17 @@ class UpcomingTap extends StatelessWidget {
 }
 
 class AnimeGridView extends StatelessWidget {
+  final value;
+
   const AnimeGridView({
     Key key,
+    @required this.value,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    totalvalue.addAll(value.top);
+
     return RequestBuilder<UpcomingCubit, CategoryModel>(
       onLoading: (context, state, value) => LoadingSliverView(),
       onLoaded: (context, state, value) => SliverGrid(
@@ -58,12 +96,12 @@ class AnimeGridView extends StatelessWidget {
           (BuildContext context, int index) {
             return AnimeCard(
               cliced: true,
-              title: value.top[index].title,
-              id: value.top[index].malId,
-              imageUrl: value.top[index].imageUrl,
+              title: totalvalue[index].title,
+              id: totalvalue[index].malId,
+              imageUrl: totalvalue[index].imageUrl,
             );
           },
-          childCount: value.top.length,
+          childCount: totalvalue.length,
         ),
       ),
     );

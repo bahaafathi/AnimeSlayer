@@ -35,9 +35,6 @@ class _TopTapState extends State<TopTap> {
         List<dynamic> addlist =
             await BlocProvider.of<TopCubit>(context).loadData(numTopCubit: num);
         totalvalue.addAll(addlist);
-
-        print(
-            "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc");
       }
     });
     super.initState();

@@ -37,9 +37,6 @@ class _UpcomingTapState extends State<UpcomingTap> {
         List<dynamic> addlist =
             await BlocProvider.of<UpcomingCubit>(context).loadData(num: num);
         totalvalue.addAll(addlist);
-
-        print(
-            "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc");
       }
     });
     super.initState();

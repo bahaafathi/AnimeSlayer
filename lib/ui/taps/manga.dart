@@ -30,9 +30,6 @@ class _MangaTapState extends State<MangaTap> {
         List<dynamic> addlist = await BlocProvider.of<Mangacubit>(context)
             .loadData(numTopCubit: num);
         totalvalue.addAll(addlist);
-
-        print(
-            "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc");
       }
     });
     super.initState();

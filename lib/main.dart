@@ -11,6 +11,7 @@ import 'package:myanime/cubits/ova.dart';
 import 'package:myanime/cubits/special.dart';
 import 'package:myanime/cubits/top.dart';
 import 'package:myanime/cubits/upcoming.dart';
+import 'package:myanime/models/favorite.dart';
 import 'package:myanime/repositories/changelog.dart';
 import 'package:myanime/repositories/details.dart';
 import 'package:myanime/repositories/details/characterstuff.dart';
@@ -38,6 +39,7 @@ import 'package:myanime/services/top.dart';
 import 'package:myanime/services/upcoming.dart';
 import 'package:myanime/ui/start.dart';
 import 'package:myanime/utils/bloc_observer.dart';
+import 'package:myanime/utils/dataBase/database.dart';
 import 'package:myanime/utils/routes.dart';
 import 'package:myanime/utils/url.dart';
 import 'package:path_provider/path_provider.dart';
@@ -56,8 +58,29 @@ import 'cubits/recommendation.dart';
 import 'cubits/review.dart';
 import 'cubits/search.dart';
 import 'cubits/theme.dart';
+import 'models/notes.dart';
 
 void main() async {
+  // var mm = {"id": 3, "name": "ss", "img": "sderfev"};
+  
+
+  // var fm = FavoriteModel.fromJson(mm);
+  // fm()
+  // fm.id = 33;
+  // fm.img = "ssss";
+  // fm.name = "scxcdc";
+  // DataBasefavorite db;
+
+  // var nn = DataBasefavorite();
+  // await nn.initdb();
+  // await nn.insertfavorite(FavoriteModel(id: 22, img: "smkm", name: "bnjbjb"));
+  // var mmlsd = await nn.getallfavorite();
+  // print(mmlsd);
+
+  // var aa = await db.initdb();
+
+  // db.insertfavorite(FavoriteModel());
+  // print(db.getallfavorite());
   WidgetsFlutterBinding.ensureInitialized();
   final httpClient = Dio();
   HydratedBloc.storage = await HydratedStorage.build(
@@ -144,6 +167,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return MultiBlocProvider(
         providers: [
           BlocProvider(create: (_) => Mangacubit(mangaRepository)),

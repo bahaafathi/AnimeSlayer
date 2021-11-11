@@ -108,9 +108,9 @@ class SliverPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    tabbarBody == null
-        ? print('nullllllllllllllllllll')
-        : print('not nullllllllllllllll');
+    // tabbarBody == null
+    //     ? print('nullllllllllllllllllll')
+    //     : print('not nullllllllllllllll');
     return isTaped
         ? NestedScrollView(
             body: tabbarBody,
@@ -200,9 +200,9 @@ class RequestSliverPage<C extends RequestCubit, T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    tabbarBody == null
-        ? print('RequestSliverPage nullllll')
-        : print('RequestSliverPage not nulllllll');
+    // tabbarBody == null
+    // ? print('RequestSliverPage nullllll')
+    // : print('RequestSliverPage not nulllllll');
 
     return RefreshIndicator(
       onRefresh: () => context.read<C>().loadData(),

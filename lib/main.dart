@@ -58,29 +58,8 @@ import 'cubits/recommendation.dart';
 import 'cubits/review.dart';
 import 'cubits/search.dart';
 import 'cubits/theme.dart';
-import 'models/notes.dart';
 
 void main() async {
-  // var mm = {"id": 3, "name": "ss", "img": "sderfev"};
-  
-
-  // var fm = FavoriteModel.fromJson(mm);
-  // fm()
-  // fm.id = 33;
-  // fm.img = "ssss";
-  // fm.name = "scxcdc";
-  // DataBasefavorite db;
-
-  // var nn = DataBasefavorite();
-  // await nn.initdb();
-  // await nn.insertfavorite(FavoriteModel(id: 22, img: "smkm", name: "bnjbjb"));
-  // var mmlsd = await nn.getallfavorite();
-  // print(mmlsd);
-
-  // var aa = await db.initdb();
-
-  // db.insertfavorite(FavoriteModel());
-  // print(db.getallfavorite());
   WidgetsFlutterBinding.ensureInitialized();
   final httpClient = Dio();
   HydratedBloc.storage = await HydratedStorage.build(
@@ -115,17 +94,6 @@ void main() async {
   );
 
   Bloc.observer = MyBlocObserver();
-
-  // print('_________________________________________');
-  // final data =
-  //     await DetailsRepository(DetailsService(httpClient)).fetchData(id: 1);
-  // print(data[1].characters[0].name);
-  // print('_________________________________________');
-  // var data = await SearchRepository(SearchService(httpClient)).fetchData();
-  // print(data.results[0].title);
-  // var data =
-  //     await PicturesRepository(DetailsService(httpClient)).fetchData(id: 1);
-  // print(data.pictures[0].large);
 }
 
 class MyApp extends StatelessWidget {
@@ -167,7 +135,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     return MultiBlocProvider(
         providers: [
           BlocProvider(create: (_) => Mangacubit(mangaRepository)),

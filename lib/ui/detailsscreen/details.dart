@@ -71,9 +71,9 @@ class _DetailsPageState extends State<DetailsPage>
 
   List<FavoriteModel> item = [];
   void updateListView() async {
-    var mm = await databaseHelper.getAllUsers();
+    var database = await databaseHelper.getAllUsers();
 
-    item = mm;
+    item = database;
     if (item.isNotEmpty) {
       for (int i = 0; i < item.length; i++) {
         if (item[i].id == widget.id) {
@@ -104,13 +104,18 @@ class _DetailsPageState extends State<DetailsPage>
 
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
+        tooltip: "Add to favourites",
         backgroundColor: add ? Colors.red : Colors.white,
         focusColor: Colors.black,
         mouseCursor: MouseCursor.defer,
         autofocus: true,
         isExtended: true,
-        child: Icon(Icons.add),
+        child: Icon(
+          Icons.add,
+          size: 40,
+        ),
         onPressed: () {
           setState(() {
             insss();

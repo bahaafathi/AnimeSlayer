@@ -27,15 +27,17 @@ class _OvaTapState extends State<OvaTap> {
   ScrollController controller = ScrollController();
   DataBasefavorite databaseHelper = DataBasefavorite();
   FavoriteModel noteList;
-  @override
   void updateListView() async {
     var data = await databaseHelper.getAllUsers();
-    items = data;
-    if (items.isEmpty) {
-      favorite = false;
-    } else {
-      favorite = true;
-    }
+
+    setState(() {
+      items = data;
+      if (items.isEmpty) {
+        favorite = false;
+      } else {
+        favorite = true;
+      }
+    });
   }
 
   @override
